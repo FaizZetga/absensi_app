@@ -1,0 +1,39 @@
+name: absensi_app
+description: "Aplikasi Presensi dengan Haversine & Geofencing"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # 🔥 CORE FITUR TA
+  geolocator: ^12.0.0        # ambil lokasi GPS
+  permission_handler: ^11.3.0 # izin lokasi
+
+  # 🔥 UI & VISUAL
+  google_fonts: ^6.2.1
+  fl_chart: ^0.66.2          # chart (riwayat)
+  lottie: ^3.1.0             # animasi (opsional biar keren)
+
+  # 🔥 STATE (optional tapi recommended)
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # 🔥 kalau nanti pakai gambar / icon custom
+  assets:
+    - assets/images/
