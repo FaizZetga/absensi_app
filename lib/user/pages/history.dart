@@ -1,100 +1,195 @@
 import 'package:flutter/material.dart';
+import '../../widgets/glass_box.dart';
+import '../../widgets/gradient_background.dart';
+import '../../services/api_service.dart';
 
 class HistoryPage extends StatefulWidget {
   final VoidCallback onHome;
   final bool isDarkMode;
+  final Map<String, dynamic>? userData;
 
-  HistoryPage({required this.onHome, required this.isDarkMode});
+  HistoryPage({
+    required this.onHome,
+    required this.isDarkMode,
+    this.userData,
+  });
 
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final List<Map<String, dynamic>> historyData = [
-    {
-      'date': '2024-03-26',
-      'status': 'Hadir',
-      'time': '08:30',
-      'location': 'Kantor Pusat',
-    },
-    {
-      'date': '2024-03-25',
-      'status': 'Izin',
-      'time': '-',
-      'location': '-',
-    },
-    {
-      'date': '2024-03-24',
-      'status': 'Hadir',
-      'time': '08:15',
-      'location': 'Kantor Pusat',
-    },
-  ];
+  final ApiService _apiService = ApiService();
+  List<dynamic> historyData = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    if (widget.userData == null || widget.userData!['id'] == null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    final int userId = widget.userData!['id'];
+
+    try {
+      final data = await _apiService.getUserAttendance(userId);
+      setState(() {
+        historyData = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Gagal memuat riwayat: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final textColor = widget.isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = widget.isDarkMode ? Colors.white70 : Colors.black54;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.arrow_back_ios_new, color: textColor),
           onPressed: widget.onHome,
         ),
-        title: Text("Riwayat Presensi"),
+        title: Text(
+          "Riwayat Presensi",
+          style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
+        ),
         centerTitle: true,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: widget.isDarkMode
-                ? [Colors.grey.shade900, Colors.grey.shade800]
-                : [
-                    Color(0xFF10B981),
-                    Color(0xFF059669),
-                    Color(0xFF06B6D4),
-                    Color(0xFF0891B2),
-                  ],
-            stops: widget.isDarkMode ? null : [0.0, 0.3, 0.7, 1.0],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh, color: textColor),
+            onPressed: _loadHistory,
           ),
-        ),
-        child: ListView.builder(
-          padding: EdgeInsets.all(16),
-          itemCount: historyData.length,
-          itemBuilder: (context, index) {
-            final item = historyData[index];
-            return Card(
-              elevation: 4,
-              margin: EdgeInsets.only(bottom: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: item['status'] == 'Hadir' ? Colors.green : Colors.orange,
-                  child: Icon(
-                    item['status'] == 'Hadir' ? Icons.check : Icons.warning,
-                    color: Colors.white,
+        ],
+      ),
+      body: GradientBackground(
+        isDarkMode: widget.isDarkMode,
+        child: isLoading
+            ? Center(child: CircularProgressIndicator(color: textColor))
+            : historyData.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.history_rounded, size: 64, color: subTextColor.withOpacity(0.5)),
+                        SizedBox(height: 16),
+                        Text(
+                          'Anda belum memiliki riwayat presensi',
+                          style: TextStyle(color: subTextColor, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
+                    itemCount: historyData.length,
+                    itemBuilder: (context, index) {
+                      final item = historyData[index];
+                      
+                      // Format tanggal
+                      String dateStr = item['date'] ?? '-';
+                      if (dateStr.length > 10) {
+                        dateStr = dateStr.substring(0, 10);
+                      }
+                      
+                      final timeStr = item['clock_in'] ?? '-';
+                      final isGood = item['status'] == 'on_time';
+                      final statusStr = isGood 
+                          ? 'Tepat Waktu' 
+                          : item['status'] == 'late' 
+                              ? 'Terlambat' 
+                              : item['status'] ?? '-';
+
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: GlassBox(
+                          isDarkMode: widget.isDarkMode,
+                          padding: EdgeInsets.all(16),
+                          borderRadius: 20,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: isGood ? Colors.green.withOpacity(0.15) : Colors.orange.withOpacity(0.15),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isGood ? Icons.check_circle_rounded : Icons.warning_rounded,
+                                  color: isGood ? Colors.green : Colors.orange,
+                                  size: 28,
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dateStr,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: textColor,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.schedule_rounded, size: 14, color: subTextColor),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          timeStr,
+                                          style: TextStyle(color: subTextColor, fontSize: 13),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: isGood ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: isGood ? Colors.green.withOpacity(0.3) : Colors.orange.withOpacity(0.3)),
+                                ),
+                                child: Text(
+                                  statusStr,
+                                  style: TextStyle(
+                                    color: isGood ? Colors.green : Colors.orange,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-                title: Text(
-                  item['date'],
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Status: ${item['status']}'),
-                    Text('Waktu: ${item['time']}'),
-                    Text('Lokasi: ${item['location']}'),
-                  ],
-                ),
-                trailing: Icon(Icons.arrow_forward_ios, size: 16),
-              ),
-            );
-          },
-        ),
       ),
     );
   }

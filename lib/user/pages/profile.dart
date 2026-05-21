@@ -1,186 +1,228 @@
 import 'package:flutter/material.dart';
-
+import '../../widgets/glass_box.dart';
+import '../../widgets/gradient_background.dart';
 class ProfilePage extends StatefulWidget {
   final VoidCallback onLogout;
   final VoidCallback onHome;
   final VoidCallback onToggleDarkMode;
   final bool isDarkMode;
+  final Map<String, dynamic>? userData;
 
-  ProfilePage({required this.onLogout, required this.onHome, required this.onToggleDarkMode, required this.isDarkMode});
+  ProfilePage({
+    required this.onLogout,
+    required this.onHome,
+    required this.onToggleDarkMode,
+    required this.isDarkMode,
+    this.userData,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final String name = "User Keren";
-  final String email = "user@email.com";
-  final String phone = "+62 812-3456-7890";
-  final String department = "IT Department";
+  // Variabel statis tidak dipakai lagi, kita langsung ambil dari widget.userData
+  // di dalam fungsi build() agar data selalu update.
 
   @override
   Widget build(BuildContext context) {
+    final textColor = widget.isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = widget.isDarkMode ? Colors.white70 : Colors.black54;
+
+    final String name = widget.userData?['nama'] ?? widget.userData?['name'] ?? 'User';
+    final String email = widget.userData?['email'] ?? 'email@domain.com';
+    final String phone = widget.userData?['phone'] ?? '-';
+    final String department = widget.userData?['department_name'] ?? widget.userData?['department'] ?? 'Belum Diatur';
+    final String lokasi = "Kantor Pusat"; // Bisa disesuaikan jika punya field lokasi per user
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.arrow_back_ios_new, color: textColor),
           onPressed: widget.onHome,
         ),
-        title: Text("Profile"),
-        centerTitle: true,
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: widget.isDarkMode
-                ? [Colors.grey.shade900, Colors.grey.shade800]
-                : [
-                    Color(0xFF10B981),
-                    Color(0xFF059669),
-                    Color(0xFF06B6D4),
-                    Color(0xFF0891B2),
-                  ],
-            stops: widget.isDarkMode ? null : [0.0, 0.3, 0.7, 1.0],
-          ),
+        title: Text(
+          "Profile",
+          style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
         ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: GradientBackground(
+        isDarkMode: widget.isDarkMode,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(24),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.12),
-                        blurRadius: 24,
-                        offset: Offset(0, 10),
+          padding: EdgeInsets.fromLTRB(24, 20, 24, 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GlassBox(
+                isDarkMode: widget.isDarkMode,
+                padding: EdgeInsets.all(32),
+                borderRadius: 32,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.blue.shade100,
-                          child: Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Colors.blue.shade700,
-                          ),
+                      child: CircleAvatar(
+                        radius: 56,
+                        backgroundColor: widget.isDarkMode ? Colors.blue.withOpacity(0.2) : Colors.blue.shade100,
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 64,
+                          color: widget.isDarkMode ? Colors.blue.shade300 : Colors.blue.shade700,
                         ),
-                        SizedBox(height: 16),
-                        Text(
-                          name,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF10B981),
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                        color: textColor,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      email,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: subTextColor,
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                    
+                    // Info Section
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: widget.isDarkMode ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildInfoRow(Icons.phone_rounded, "Telepon", phone, textColor, subTextColor),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Divider(color: subTextColor.withOpacity(0.2)),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          email,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade600,
+                          _buildInfoRow(Icons.business_rounded, "Departemen", department, textColor, subTextColor),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Divider(color: subTextColor.withOpacity(0.2)),
                           ),
-                        ),
-                        SizedBox(height: 24),
-                        Container(
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
+                          _buildInfoRow(Icons.location_on_rounded, "Lokasi", lokasi, textColor, subTextColor),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    
+                    // Dark Mode Toggle
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: widget.isDarkMode ? Colors.black.withOpacity(0.2) : Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              _buildInfoRow(Icons.phone, "Telepon", phone),
-                              _buildInfoRow(Icons.business, "Departemen", department),
-                              _buildInfoRow(Icons.location_on, "Lokasi", "yogyakarta"),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Divider(color: Colors.grey.shade300),
-                        SizedBox(height: 16),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                              Icon(
+                                widget.isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                                color: widget.isDarkMode ? Colors.amber : Colors.orange,
+                              ),
+                              SizedBox(width: 16),
                               Text(
                                 "Mode Gelap",
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
                                 ),
-                              ),
-                              Switch(
-                                value: widget.isDarkMode,
-                                onChanged: (value) => widget.onToggleDarkMode(),
-                                activeColor: Colors.blue.shade600,
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          Switch(
+                            value: widget.isDarkMode,
+                            onChanged: (value) => widget.onToggleDarkMode(),
+                            activeColor: Colors.blue.shade400,
+                            activeTrackColor: Colors.blue.withOpacity(0.3),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 24),
+              
+              // Logout Button
+              ElevatedButton.icon(
+                onPressed: widget.onLogout,
+                icon: Icon(Icons.logout_rounded),
+                label: Text(
+                  "Keluar",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.withOpacity(0.8),
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 0,
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.blue.shade700),
-          SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+  Widget _buildInfoRow(IconData icon, String label, String value, Color textColor, Color subTextColor) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: widget.isDarkMode ? Colors.blue.withOpacity(0.2) : Colors.blue.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
           ),
-        ],
-      ),
+          child: Icon(icon, color: widget.isDarkMode ? Colors.blue.shade300 : Colors.blue.shade700, size: 20),
+        ),
+        SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: subTextColor,
+              ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

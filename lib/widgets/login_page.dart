@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function(bool) onLogin;
+  final Function(bool, Map<String, dynamic>?) onLogin;
 
   LoginPage({required this.onLogin});
 
@@ -12,19 +13,51 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isAdmin = false;
+  bool isAdminSelection = false; // Hanya untuk UI toggle
   bool _obscurePassword = true;
+  bool _isLoading = false;
+  final ApiService _apiService = ApiService();
 
-  void _login() {
-    // Simple authentication: admin/admin, user/user
-    if (isAdmin && usernameController.text == 'admin' && passwordController.text == 'admin') {
-      widget.onLogin(true);
-    } else if (!isAdmin && usernameController.text == 'user' && passwordController.text == 'user') {
-      widget.onLogin(false);
-    } else {
+  void _login() async {
+    String email = usernameController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Email dan password tidak boleh kosong')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final result = await _apiService.login(email, password);
+
+      setState(() => _isLoading = false);
+
+      if (result != null) {
+        String role = result['user']['role'];
+
+        // Cek apakah role sesuai dengan yang diinginkan database
+        if (role == 'admin') {
+          widget.onLogin(true, result['user']);
+        } else {
+          widget.onLogin(false, result['user']);
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Email atau password salah'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Username atau password salah'),
+          content: Text('Terjadi kesalahan koneksi ke server'),
           backgroundColor: Colors.red,
         ),
       );
@@ -153,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: usernameController,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
-                                  labelText: 'Username',
+                                  labelText: 'Email',
                                   prefixIcon: Icon(
                                     Icons.person,
                                     color: Color(0xFF667EEA),
@@ -203,7 +236,9 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                                      _obscurePassword
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
                                       color: Color(0xFF667EEA),
                                     ),
                                     onPressed: () {
@@ -267,8 +302,8 @@ class _LoginPageState extends State<LoginPage> {
                                       children: [
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () =>
-                                                setState(() => isAdmin = false),
+                                            onTap: () => setState(
+                                                () => isAdminSelection = false),
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
                                                 vertical: 12,
@@ -277,7 +312,7 @@ class _LoginPageState extends State<LoginPage> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: !isAdmin
+                                                color: !isAdminSelection
                                                     ? Color(0xFF667EEA)
                                                     : Colors.white,
                                                 border: Border.all(
@@ -291,7 +326,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 children: [
                                                   Icon(
                                                     Icons.person,
-                                                    color: !isAdmin
+                                                    color: !isAdminSelection
                                                         ? Colors.white
                                                         : Color(0xFF667EEA),
                                                     size: 18,
@@ -302,7 +337,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      color: !isAdmin
+                                                      color: !isAdminSelection
                                                           ? Colors.white
                                                           : Color(0xFF667EEA),
                                                     ),
@@ -315,8 +350,8 @@ class _LoginPageState extends State<LoginPage> {
                                         SizedBox(width: 12),
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () =>
-                                                setState(() => isAdmin = true),
+                                            onTap: () => setState(
+                                                () => isAdminSelection = true),
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
                                                 vertical: 12,
@@ -325,7 +360,7 @@ class _LoginPageState extends State<LoginPage> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                color: isAdmin
+                                                color: isAdminSelection
                                                     ? Color(0xFF667EEA)
                                                     : Colors.white,
                                                 border: Border.all(
@@ -338,9 +373,8 @@ class _LoginPageState extends State<LoginPage> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons
-                                                        .admin_panel_settings,
-                                                    color: isAdmin
+                                                    Icons.admin_panel_settings,
+                                                    color: isAdminSelection
                                                         ? Colors.white
                                                         : Color(0xFF667EEA),
                                                     size: 18,
@@ -351,7 +385,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      color: isAdmin
+                                                      color: isAdminSelection
                                                           ? Colors.white
                                                           : Color(0xFF667EEA),
                                                     ),
@@ -384,8 +418,8 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Color(0xFF667EEA)
-                                            .withOpacity(0.4),
+                                        color:
+                                            Color(0xFF667EEA).withOpacity(0.4),
                                         blurRadius: 15,
                                         offset: Offset(0, 8),
                                       ),
@@ -397,19 +431,27 @@ class _LoginPageState extends State<LoginPage> {
                                       backgroundColor: Colors.transparent,
                                       shadowColor: Colors.transparent,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
+                                    child: _isLoading
+                                        ? SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(
+                                            'Login',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
                                   ),
                                 ),
                               ),

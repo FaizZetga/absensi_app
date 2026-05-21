@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user/user_main.dart';
 import 'admin/admin_main.dart';
 import 'widgets/login_page.dart';
@@ -15,16 +17,54 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool? isAdmin; // null means not logged in
   bool isDarkMode = false;
+  Map<String, dynamic>? loggedInUser;
+  bool isCheckingLogin = true; // Flag untuk loading saat cek session
 
-  void login(bool admin) {
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedIsAdmin = prefs.getBool('isAdmin');
+    final savedUserDataStr = prefs.getString('userData');
+
+    if (savedIsAdmin != null && savedUserDataStr != null) {
+      setState(() {
+        isAdmin = savedIsAdmin;
+        loggedInUser = json.decode(savedUserDataStr);
+        isCheckingLogin = false;
+      });
+    } else {
+      setState(() {
+        isCheckingLogin = false;
+      });
+    }
+  }
+
+  void login(bool admin, [Map<String, dynamic>? user]) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isAdmin', admin);
+    if (user != null) {
+      await prefs.setString('userData', json.encode(user));
+    }
+
     setState(() {
       isAdmin = admin;
+      loggedInUser = user;
     });
   }
 
-  void logout() {
+  void logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isAdmin');
+    await prefs.remove('userData');
+
     setState(() {
       isAdmin = null;
+      loggedInUser = null;
     });
   }
 
@@ -36,6 +76,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (isCheckingLogin) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -70,7 +121,7 @@ class _MyAppState extends State<MyApp> {
           ? LoginPage(onLogin: login)
           : isAdmin!
               ? AdminMain(onLogout: logout, onToggleDarkMode: toggleDarkMode, isDarkMode: isDarkMode)
-              : UserMain(onLogout: logout, onToggleDarkMode: toggleDarkMode, isDarkMode: isDarkMode),
+              : UserMain(onLogout: logout, onToggleDarkMode: toggleDarkMode, isDarkMode: isDarkMode, userData: loggedInUser),
     );
   }
 }

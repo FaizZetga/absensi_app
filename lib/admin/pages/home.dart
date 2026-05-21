@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../services/api_service.dart';
+import '../../widgets/gradient_background.dart';
+import '../../widgets/glass_box.dart';
 
 class AdminHome extends StatefulWidget {
   final Function(int) onNavigate;
@@ -11,105 +14,262 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  final ApiService _apiService = ApiService();
+  int _totalKaryawan = 0;
+  int _totalPresensiHariIni = 0;
+  bool _isLoadingStats = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    try {
+      final users = await _apiService.getUsers();
+      final todayCount = await _apiService.getTodayAttendanceCount();
+
+      if (mounted) {
+        setState(() {
+          _totalKaryawan = users.length;
+          _totalPresensiHariIni = todayCount;
+          _isLoadingStats = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingStats = false);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    final textColor = widget.isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = widget.isDarkMode ? Colors.white70 : Colors.black54;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Responsive configurations
+    int crossAxisCount = 2;
+    double paddingHorizontal = 24;
+    if (screenWidth > 1200) {
+      crossAxisCount = 4;
+      paddingHorizontal = screenWidth * 0.15;
+    } else if (screenWidth > 800) {
+      crossAxisCount = 3;
+      paddingHorizontal = screenWidth * 0.1;
+    } else if (screenWidth > 600) {
+      crossAxisCount = 2;
+      paddingHorizontal = 32;
+    }
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Dashboard Admin"),
+        title: Text(
+          "Admin Dashboard",
+          style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh_rounded, color: textColor),
+            onPressed: () {
+              setState(() => _isLoadingStats = true);
+              _loadStats();
+            },
+          ),
+        ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: widget.isDarkMode
-                ? [Colors.grey.shade900, Colors.grey.shade800]
-                : [
-                    Color(0xFF667EEA),
-                    Color(0xFF764BA2),
-                    Color(0xFFF093FB),
-                    Color(0xFFF5576C),
-                  ],
-            stops: widget.isDarkMode ? null : [0.0, 0.3, 0.7, 1.0],
+      body: GradientBackground(
+        isDarkMode: widget.isDarkMode,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 95),
+
+                  // ── Greeting ──────────────────────────────────────────
+                  Text(
+                    'Selamat datang,',
+                    style: TextStyle(fontSize: 18, color: subTextColor),
+                  ),
+                  Text(
+                    'Admin HRD 👋',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      color: textColor,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    'Kelola sistem presensi karyawan Anda',
+                    style: TextStyle(fontSize: 15, color: subTextColor),
+                  ),
+                  SizedBox(height: 28),
+
+                  // ── Stats Row ─────────────────────────────────────────
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          icon: Icons.people_rounded,
+                          label: 'Total Karyawan',
+                          value: _isLoadingStats ? '—' : '$_totalKaryawan',
+                          color: Color(0xFF6366F1),
+                          textColor: textColor,
+                          subTextColor: subTextColor,
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: _buildStatCard(
+                          icon: Icons.fingerprint_rounded,
+                          label: 'Presensi Hari Ini',
+                          value: _isLoadingStats ? '—' : '$_totalPresensiHariIni',
+                          color: Color(0xFF10B981),
+                          textColor: textColor,
+                          subTextColor: subTextColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 28),
+
+                  // ── Section Title ──────────────────────────────────────
+                  Text(
+                    'Menu Utama',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: textColor,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+
+                  // ── Feature Grid ──────────────────────────────────────
+                  GridView.count(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    childAspectRatio: 1.05,
+                    children: [
+                      _buildFeatureCard(
+                        icon: Icons.people_rounded,
+                        title: 'Karyawan',
+                        subtitle: 'Kelola daftar user',
+                        gradientColors: [Color(0xFF0EA5E9), Color(0xFF2563EB)],
+                        onTap: () => widget.onNavigate(1),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                      _buildFeatureCard(
+                        icon: Icons.person_add_rounded,
+                        title: 'Tambah User',
+                        subtitle: 'Daftarkan user baru',
+                        gradientColors: [Color(0xFF10B981), Color(0xFF059669)],
+                        onTap: () => widget.onNavigate(2),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                      _buildFeatureCard(
+                        icon: Icons.list_alt_rounded,
+                        title: 'Riwayat',
+                        subtitle: 'Semua data presensi',
+                        gradientColors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+                        onTap: () => widget.onNavigate(3),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                      _buildFeatureCard(
+                        icon: Icons.admin_panel_settings_rounded,
+                        title: 'Profile',
+                        subtitle: 'Akun & preferensi',
+                        gradientColors: [Color(0xFFF59E0B), Color(0xFFD97706)],
+                        onTap: () => widget.onNavigate(4),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                      _buildFeatureCard(
+                        icon: Icons.settings_rounded,
+                        title: 'Pengaturan',
+                        subtitle: 'Tema & sistem',
+                        gradientColors: [Color(0xFFEC4899), Color(0xFFBE185D)],
+                        onTap: () => widget.onNavigate(5),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                      _buildFeatureCard(
+                        icon: Icons.location_on_rounded,
+                        title: 'Presensi',
+                        subtitle: 'Waktu & lokasi absen',
+                        gradientColors: [Color(0xFFEF4444), Color(0xFFB91C1C)],
+                        onTap: () => widget.onNavigate(6),
+                        textColor: textColor,
+                        subTextColor: subTextColor,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 40),
+                ],
+              ),
+            ),
           ),
         ),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Selamat datang, Admin!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: widget.isDarkMode ? Colors.white : Colors.white,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Kelola sistem presensi dengan mudah',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: widget.isDarkMode ? Colors.white70 : Colors.white70,
-                ),
-              ),
-              SizedBox(height: 32),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  children: [
-                    _buildFeatureCard(
-                      icon: Icons.people,
-                      title: 'Daftar User',
-                      subtitle: 'Kelola semua user',
-                      color: Colors.cyan,
-                      onTap: () => widget.onNavigate(1),
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.person_add,
-                      title: 'Tambah User',
-                      subtitle: 'Daftarkan user baru',
-                      color: Colors.green,
-                      onTap: () => widget.onNavigate(2),
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.list,
-                      title: 'Riwayat Semua',
-                      subtitle: 'Lihat semua presensi',
-                      color: Colors.blue,
-                      onTap: () => widget.onNavigate(3),
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.admin_panel_settings,
-                      title: 'Profile',
-                      subtitle: 'Kelola akun admin',
-                      color: Colors.orange,
-                      onTap: () => widget.onNavigate(4),
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.settings,
-                      title: 'Pengaturan',
-                      subtitle: 'Konfigurasi sistem',
-                      color: Colors.purple,
-                      onTap: () => widget.onNavigate(5),
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.location_on,
-                      title: 'Pengaturan Presensi',
-                      subtitle: 'Atur waktu & lokasi presensi',
-                      color: Colors.red,
-                      onTap: () => widget.onNavigate(6),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+    required Color textColor,
+    required Color subTextColor,
+  }) {
+    return GlassBox(
+      isDarkMode: widget.isDarkMode,
+      borderRadius: 20,
+      padding: EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 22),
           ),
-        ),
+          SizedBox(height: 14),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w800,
+              color: textColor,
+              letterSpacing: -1,
+            ),
+          ),
+          SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: subTextColor),
+          ),
+        ],
       ),
     );
   }
@@ -118,47 +278,60 @@ class _AdminHomeState extends State<AdminHome> {
     required IconData icon,
     required String title,
     required String subtitle,
-    required Color color,
+    required List<Color> gradientColors,
     required VoidCallback onTap,
+    required Color textColor,
+    required Color subTextColor,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 48,
-                color: color,
-              ),
-              SizedBox(height: 8),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+      child: GlassBox(
+        isDarkMode: widget.isDarkMode,
+        borderRadius: 22,
+        padding: EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(11),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: gradientColors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                textAlign: TextAlign.center,
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: gradientColors[0].withOpacity(0.35),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
-              SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade600,
-                ),
-                textAlign: TextAlign.center,
+              child: Icon(icon, size: 26, color: Colors.white),
+            ),
+            Spacer(),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: textColor,
+                letterSpacing: -0.3,
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 3),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 12,
+                color: subTextColor,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
