@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================
+  DIAGRAM ALIR DATA (DAD) - LEVEL 2
+  Sistem Aplikasi Absensi
+  ============================================================
+  Deskripsi:
+    Level 2 merinci setiap proses dari Level 1 menjadi
+    sub-sub proses yang lebih spesifik.
+
+  Proses yang Dirinci:
+    P1 → 1.1, 1.2, 1.3  (Autentikasi)
+    P2 → 2.1, 2.2, 2.3  (Presensi)
+    P3 → 3.1, 3.2, 3.3, 3.4  (Manajemen User)
+    P4 → 4.1, 4.2        (Pengaturan Sistem)
+
+  File ini dapat dibuka di: https://app.diagrams.net
+  ============================================================
+-->
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1"
+              tooltips="1" connect="1" arrows="1" fold="1"
+              page="1" pageScale="1" pageWidth="2338" pageHeight="1654"
+              math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ==================== JUDUL UTAMA ==================== -->
+    <mxCell id="main_title" value="DAD LEVEL 2 — Sistem Informasi Absensi"
+            style="text;html=1;strokeColor=none;fillColor=none;align=center;
+                   verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#1a237e;"
+            vertex="1" parent="1">
+      <mxGeometry x="469" y="20" width="1400" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ============================================================
+         BAGIAN 1: PROSES AUTENTIKASI (P1)
+         Sub-proses: 1.1 Terima Kredensial, 1.2 Validasi, 1.3 Kelola Session
+    ============================================================ -->
+
+    <!-- Label section -->
+    <mxCell id="sec1_bg" value=""
+            style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffde7;
+                   strokeColor=#f9a825;opacity=30;"
+            vertex="1" parent="1">
+      <mxGeometry x="50" y="80" width="1080" height="420" as="geometry" />
+    </mxCell>
+    <mxCell id="sec1_label" value="PROSES 1: AUTENTIKASI"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontStyle=1;fontSize=15;fontColor=#f57f17;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="90" width="300" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- E1 Karyawan -->
+    <mxCell id="s1_E1" value="KARYAWAN"
+            style="shape=mxgraph.dfd.entity;whiteSpace=wrap;html=1;
+                   fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="200" width="130" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- E2 Admin -->
+    <mxCell id="s1_E2" value="ADMIN"
+            style="shape=mxgraph.dfd.entity;whiteSpace=wrap;html=1;
+                   fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="350" width="130" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- P1.1: Terima Kredensial -->
+    <mxCell id="P1_1" value="1.1&#xa;TERIMA&#xa;KREDENSIAL"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#fff9c4;strokeColor=#f9a825;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="270" y="195" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P1.2: Validasi Login -->
+    <mxCell id="P1_2" value="1.2&#xa;VALIDASI&#xa;LOGIN"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#fff9c4;strokeColor=#f9a825;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="520" y="195" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P1.3: Kelola Session -->
+    <mxCell id="P1_3" value="1.3&#xa;KELOLA&#xa;SESSION"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#fff9c4;strokeColor=#f9a825;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="770" y="195" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- D1: DB Users (Autentikasi) -->
+    <mxCell id="s1_D1" value="D1 | DB Users"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="520" y="370" width="280" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- Aliran 1.1 -->
+    <mxCell id="s1_f1" value="email, password"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s1_E1" target="P1_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="s1_f1b" value="email, password"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s1_E2" target="P1_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P1.1 → P1.2 -->
+    <mxCell id="s1_f2" value="kredensial terformat"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC6600;
+                   fontColor=#CC6600;fontSize=10;fontStyle=2;"
+            edge="1" source="P1_1" target="P1_2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P1.2 → D1 (query) -->
+    <mxCell id="s1_f3" value="query: email+password"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P1_2" target="s1_D1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- D1 → P1.2 (hasil query) -->
+    <mxCell id="s1_f4" value="data user + role"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s1_D1" target="P1_2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="680" y="370" />
+          <mxPoint x="680" y="310" />
+          <mxPoint x="600" y="310" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- P1.2 → P1.3 (jika valid) -->
+    <mxCell id="s1_f5" value="user terautentikasi"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC6600;
+                   fontColor=#CC6600;fontSize=10;fontStyle=2;"
+            edge="1" source="P1_2" target="P1_3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P1.3 → E1/E2 (session info) -->
+    <mxCell id="s1_f6" value="session / role aktif"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#006600;
+                   fontColor=#006600;fontSize=10;fontStyle=2;"
+            edge="1" source="P1_3" target="s1_E1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="850" y="380" />
+          <mxPoint x="200" y="380" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- P1.2 → E1 (gagal) -->
+    <mxCell id="s1_f7" value="pesan gagal login"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;
+                   fontColor=#CC0000;fontSize=10;fontStyle=2;dashed=1;"
+            edge="1" source="P1_2" target="s1_E1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="600" y="420" />
+          <mxPoint x="135" y="420" />
+          <mxPoint x="135" y="270" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ============================================================
+         BAGIAN 2: PROSES PRESENSI (P2)
+         Sub-proses: 2.1 Cek Pengaturan, 2.2 Validasi Lokasi&Waktu, 2.3 Simpan Presensi
+    ============================================================ -->
+
+    <mxCell id="sec2_bg" value=""
+            style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;
+                   strokeColor=#388e3c;opacity=30;"
+            vertex="1" parent="1">
+      <mxGeometry x="50" y="560" width="1080" height="440" as="geometry" />
+    </mxCell>
+    <mxCell id="sec2_label" value="PROSES 2: PRESENSI"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontStyle=1;fontSize=15;fontColor=#1b5e20;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="570" width="300" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- E1 Karyawan (P2 section) -->
+    <mxCell id="s2_E1" value="KARYAWAN"
+            style="shape=mxgraph.dfd.entity;whiteSpace=wrap;html=1;
+                   fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="670" width="130" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- P2.1: Cek Pengaturan Presensi -->
+    <mxCell id="P2_1" value="2.1&#xa;CEK&#xa;PENGATURAN"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#c8e6c9;strokeColor=#388e3c;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="270" y="660" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P2.2: Validasi Lokasi & Waktu -->
+    <mxCell id="P2_2" value="2.2&#xa;VALIDASI LOKASI&#xa;&amp; WAKTU"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#c8e6c9;strokeColor=#388e3c;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="520" y="660" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P2.3: Simpan Presensi -->
+    <mxCell id="P2_3" value="2.3&#xa;SIMPAN&#xa;PRESENSI"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#c8e6c9;strokeColor=#388e3c;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="770" y="660" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- D3: DB Settings -->
+    <mxCell id="s2_D3" value="D3 | DB Settings"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="270" y="820" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- D2: DB Attendances -->
+    <mxCell id="s2_D2" value="D2 | DB Attendances"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="680" y="820" width="220" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- Aliran P2 -->
+    <mxCell id="s2_f1" value="GPS (lat, lon)"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s2_E1" target="P2_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- D3 → P2.1 -->
+    <mxCell id="s2_f2" value="baca: lokasi pusat,&#xa;radius, jam kerja"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s2_D3" target="P2_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P2.1 → P2.2 -->
+    <mxCell id="s2_f3" value="settings aktif"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC6600;
+                   fontColor=#CC6600;fontSize=10;fontStyle=2;"
+            edge="1" source="P2_1" target="P2_2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P2.2 → P2.3 (valid) -->
+    <mxCell id="s2_f4" value="lokasi &amp; waktu valid"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC6600;
+                   fontColor=#CC6600;fontSize=10;fontStyle=2;"
+            edge="1" source="P2_2" target="P2_3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P2.3 → D2 -->
+    <mxCell id="s2_f5" value="tulis: user_id, date,&#xa;clock_in, lat, lon, status"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P2_3" target="s2_D2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P2.3 → E1 (konfirmasi) -->
+    <mxCell id="s2_f6" value="konfirmasi berhasil"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#006600;
+                   fontColor=#006600;fontSize=10;fontStyle=2;"
+            edge="1" source="P2_3" target="s2_E1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="850" y="900" />
+          <mxPoint x="135" y="900" />
+          <mxPoint x="135" y="740" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- P2.2 → E1 (gagal) -->
+    <mxCell id="s2_f7" value="pesan gagal (di luar area/jam)"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;
+                   fontColor=#CC0000;fontSize=10;fontStyle=2;dashed=1;"
+            edge="1" source="P2_2" target="s2_E1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="600" y="940" />
+          <mxPoint x="135" y="940" />
+          <mxPoint x="135" y="740" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ============================================================
+         BAGIAN 3: PROSES MANAJEMEN USER (P3)
+         Sub-proses: 3.1 Tambah User, 3.2 Lihat Daftar User, 3.3 Edit User, 3.4 Hapus User
+    ============================================================ -->
+
+    <mxCell id="sec3_bg" value=""
+            style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;
+                   strokeColor=#1565c0;opacity=30;"
+            vertex="1" parent="1">
+      <mxGeometry x="1190" y="80" width="1100" height="480" as="geometry" />
+    </mxCell>
+    <mxCell id="sec3_label" value="PROSES 3: MANAJEMEN USER"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontStyle=1;fontSize=15;fontColor=#0d47a1;"
+            vertex="1" parent="1">
+      <mxGeometry x="1210" y="90" width="400" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- E2 Admin (P3 section) -->
+    <mxCell id="s3_E2" value="ADMIN"
+            style="shape=mxgraph.dfd.entity;whiteSpace=wrap;html=1;
+                   fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="1210" y="190" width="130" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- P3.1: Tambah User Baru -->
+    <mxCell id="P3_1" value="3.1&#xa;TAMBAH&#xa;USER BARU"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#bbdefb;strokeColor=#1565c0;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="1410" y="130" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P3.2: Lihat Daftar User -->
+    <mxCell id="P3_2" value="3.2&#xa;LIHAT DAFTAR&#xa;USER"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#bbdefb;strokeColor=#1565c0;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="1640" y="130" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P3.3: Edit/Update User -->
+    <mxCell id="P3_3" value="3.3&#xa;EDIT / UPDATE&#xa;USER"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#bbdefb;strokeColor=#1565c0;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="1870" y="130" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- P3.4: Hapus User -->
+    <mxCell id="P3_4" value="3.4&#xa;HAPUS&#xa;USER"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#bbdefb;strokeColor=#1565c0;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="2100" y="130" width="160" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- D1: DB Users (P3 section) -->
+    <mxCell id="s3_D1" value="D1 | DB Users"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="1560" y="310" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- D4: DB Departments -->
+    <mxCell id="s3_D4" value="D4 | DB Departments"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="1410" y="400" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- D5: DB Positions -->
+    <mxCell id="s3_D5" value="D5 | DB Positions"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="1680" y="400" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- D2: DB Attendances (hapus cascade) -->
+    <mxCell id="s3_D2" value="D2 | DB Attendances"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="2050" y="310" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P3.1 -->
+    <mxCell id="s3_f1" value="data user baru"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s3_E2" target="P3_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P3.2 -->
+    <mxCell id="s3_f2" value="permintaan daftar"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s3_E2" target="P3_2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P3.3 -->
+    <mxCell id="s3_f3" value="data update user"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s3_E2" target="P3_3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P3.4 -->
+    <mxCell id="s3_f4" value="id user dihapus"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s3_E2" target="P3_4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.1 → D1 -->
+    <mxCell id="s3_f5" value="INSERT user baru"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_1" target="s3_D1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.1 → D4 (baca dept) -->
+    <mxCell id="s3_f6" value="baca departemen"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_1" target="s3_D4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.1 → D5 (baca posisi) -->
+    <mxCell id="s3_f7" value="baca jabatan"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_1" target="s3_D5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.2 → D1 -->
+    <mxCell id="s3_f8" value="SELECT semua user"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_2" target="s3_D1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- D1 → P3.2 (hasil) -->
+    <mxCell id="s3_f9" value="daftar user + dept"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s3_D1" target="P3_2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1720" y="310" />
+          <mxPoint x="1720" y="220" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- P3.3 → D1 -->
+    <mxCell id="s3_f10" value="UPDATE user"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_3" target="s3_D1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.4 → D1 (hapus user) -->
+    <mxCell id="s3_f11" value="DELETE user"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;
+                   fontColor=#CC0000;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_4" target="s3_D1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.4 → D2 (hapus attendances cascade) -->
+    <mxCell id="s3_f12" value="DELETE attendances (cascade)"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#CC0000;
+                   fontColor=#CC0000;fontSize=10;fontStyle=2;dashed=1;"
+            edge="1" source="P3_4" target="s3_D2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P3.2 → Admin (hasil daftar) -->
+    <mxCell id="s3_f13" value="daftar user lengkap"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#006600;
+                   fontColor=#006600;fontSize=10;fontStyle=2;"
+            edge="1" source="P3_2" target="s3_E2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1720" y="500" />
+          <mxPoint x="1275" y="500" />
+          <mxPoint x="1275" y="225" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ============================================================
+         BAGIAN 4: PROSES PENGATURAN SISTEM (P4)
+         Sub-proses: 4.1 Tampilkan Pengaturan, 4.2 Update Pengaturan
+    ============================================================ -->
+
+    <mxCell id="sec4_bg" value=""
+            style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;
+                   strokeColor=#c62828;opacity=30;"
+            vertex="1" parent="1">
+      <mxGeometry x="1190" y="620" width="1100" height="380" as="geometry" />
+    </mxCell>
+    <mxCell id="sec4_label" value="PROSES 4: PENGATURAN SISTEM"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontStyle=1;fontSize=15;fontColor=#b71c1c;"
+            vertex="1" parent="1">
+      <mxGeometry x="1210" y="630" width="400" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- E2 Admin (P4 section) -->
+    <mxCell id="s4_E2" value="ADMIN"
+            style="shape=mxgraph.dfd.entity;whiteSpace=wrap;html=1;
+                   fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="1210" y="740" width="130" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- P4.1: Tampilkan Pengaturan Saat Ini -->
+    <mxCell id="P4_1" value="4.1&#xa;TAMPILKAN&#xa;PENGATURAN"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#ffcdd2;strokeColor=#c62828;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="1470" y="680" width="180" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- P4.2: Update/Simpan Pengaturan -->
+    <mxCell id="P4_2" value="4.2&#xa;UPDATE&#xa;PENGATURAN"
+            style="ellipse;whiteSpace=wrap;html=1;
+                   fillColor=#ffcdd2;strokeColor=#c62828;
+                   fontStyle=1;fontSize=12;verticalAlign=middle;"
+            vertex="1" parent="1">
+      <mxGeometry x="1780" y="680" width="180" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- D3: DB Settings (P4 section) -->
+    <mxCell id="s4_D3" value="D3 | DB Settings"
+            style="shape=mxgraph.dfd.dataStore;whiteSpace=wrap;html=1;
+                   fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;"
+            vertex="1" parent="1">
+      <mxGeometry x="1580" y="870" width="200" height="45" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P4.1 (minta lihat) -->
+    <mxCell id="s4_f1" value="permintaan tampil"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s4_E2" target="P4_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Admin → P4.2 (data baru) -->
+    <mxCell id="s4_f2" value="data pengaturan baru&#xa;(lat, lon, radius, jam)"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0066CC;
+                   fontColor=#0066CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s4_E2" target="P4_2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- D3 → P4.1 -->
+    <mxCell id="s4_f3" value="baca: settings saat ini"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="s4_D3" target="P4_1" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P4.1 → Admin -->
+    <mxCell id="s4_f4" value="tampilkan form pengaturan"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#006600;
+                   fontColor=#006600;fontSize=10;fontStyle=2;"
+            edge="1" source="P4_1" target="s4_E2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1560" y="960" />
+          <mxPoint x="1275" y="960" />
+          <mxPoint x="1275" y="775" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- P4.2 → D3 -->
+    <mxCell id="s4_f5" value="UPDATE settings"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9900CC;
+                   fontColor=#9900CC;fontSize=10;fontStyle=2;"
+            edge="1" source="P4_2" target="s4_D3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- P4.2 → Admin (konfirmasi) -->
+    <mxCell id="s4_f6" value="konfirmasi berhasil"
+            style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#006600;
+                   fontColor=#006600;fontSize:10;fontStyle=2;"
+            edge="1" source="P4_2" target="s4_E2" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1870" y="980" />
+          <mxPoint x="1275" y="980" />
+          <mxPoint x="1275" y="810" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ==================== LEGENDA GLOBAL ==================== -->
+    <mxCell id="leg_bg" value=""
+            style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;
+                   strokeColor=#666666;fontColor=#333333;"
+            vertex="1" parent="1">
+      <mxGeometry x="50" y="1080" width="900" height="140" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_title2" value="LEGENDA &amp; KETERANGAN ALIRAN DATA"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontStyle=1;fontSize=13;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="1090" width="400" height="25" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b1" value="→ Biru: Input dari Entitas Eksternal ke Proses"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#0066CC;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="1120" width="400" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b2" value="→ Hijau: Output dari Proses ke Entitas Eksternal"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#006600;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="1145" width="400" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b3" value="→ Ungu: Baca/Tulis ke Penyimpanan Data (DB)"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#9900CC;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="70" y="1170" width="400" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b4" value="→ Jingga: Aliran antar Sub-Proses (internal)"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#CC6600;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="470" y="1120" width="400" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b5" value="--→ Merah Putus: Aliran Gagal / Cascade Delete"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#CC0000;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="470" y="1145" width="400" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="leg_b6" value="Proses (x.y): Sub-Proses dari Level 1"
+            style="text;html=1;strokeColor=none;fillColor=none;
+                   align=left;fontColor=#333333;fontSize=12;"
+            vertex="1" parent="1">
+      <mxGeometry x="470" y="1170" width="400" height="20" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

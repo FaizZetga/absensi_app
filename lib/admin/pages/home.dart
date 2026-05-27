@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import '../../widgets/gradient_background.dart';
@@ -7,22 +8,44 @@ class AdminHome extends StatefulWidget {
   final Function(int) onNavigate;
   final bool isDarkMode;
 
-  AdminHome({required this.onNavigate, required this.isDarkMode});
+  AdminHome({Key? key, required this.onNavigate, required this.isDarkMode})
+      : super(key: key);
 
   @override
-  State<AdminHome> createState() => _AdminHomeState();
+  State<AdminHome> createState() => AdminHomeState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class AdminHomeState extends State<AdminHome> with WidgetsBindingObserver {
   final ApiService _apiService = ApiService();
   int _totalKaryawan = 0;
   int _totalPresensiHariIni = 0;
   bool _isLoadingStats = true;
+  Timer? _refreshTimer;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadStats();
+    // Auto-refresh setiap 30 detik agar data presensi hari ini selalu up-to-date
+    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted) _loadStats();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
+
+  /// Refresh otomatis saat app kembali dari background ke foreground
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      _loadStats();
+    }
   }
 
   Future<void> _loadStats() async {
@@ -40,6 +63,12 @@ class _AdminHomeState extends State<AdminHome> {
     } catch (e) {
       if (mounted) setState(() => _isLoadingStats = false);
     }
+  }
+
+  /// Dipanggil dari AdminMain saat halaman home kembali aktif (index = 0)
+  void refreshStats() {
+    setState(() => _isLoadingStats = true);
+    _loadStats();
   }
 
 
@@ -74,8 +103,22 @@ class _AdminHomeState extends State<AdminHome> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
+          // Indikator live update
+          if (!_isLoadingStats)
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Tooltip(
+                message: 'Auto-refresh aktif (30 detik)',
+                child: Icon(
+                  Icons.circle,
+                  size: 10,
+                  color: Colors.greenAccent,
+                ),
+              ),
+            ),
           IconButton(
             icon: Icon(Icons.refresh_rounded, color: textColor),
+            tooltip: 'Refresh sekarang',
             onPressed: () {
               setState(() => _isLoadingStats = true);
               _loadStats();

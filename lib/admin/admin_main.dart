@@ -21,7 +21,14 @@ class AdminMain extends StatefulWidget {
 class _AdminMainState extends State<AdminMain> {
   int index = 0;
 
+  /// GlobalKey agar bisa memanggil refreshStats() pada AdminHome
+  final GlobalKey<AdminHomeState> _adminHomeKey = GlobalKey<AdminHomeState>();
+
   void _onItemTapped(int newIndex) {
+    // Jika kembali ke halaman home (index 0), refresh data presensi hari ini
+    if (newIndex == 0 && index != 0) {
+      _adminHomeKey.currentState?.refreshStats();
+    }
     setState(() {
       index = newIndex;
     });
@@ -34,11 +41,20 @@ class _AdminMainState extends State<AdminMain> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      AdminHome(onNavigate: _onItemTapped, isDarkMode: widget.isDarkMode),
+      AdminHome(
+        key: _adminHomeKey,
+        onNavigate: _onItemTapped,
+        isDarkMode: widget.isDarkMode,
+      ),
       DaftarUserPage(onHome: _goHome, isDarkMode: widget.isDarkMode),
       AddUserPage(onHome: _goHome, isDarkMode: widget.isDarkMode),
       HistoryAllPage(onHome: _goHome, isDarkMode: widget.isDarkMode),
-      AdminProfile(onLogout: widget.onLogout, onHome: _goHome, onToggleDarkMode: widget.onToggleDarkMode, isDarkMode: widget.isDarkMode),
+      AdminProfile(
+        onLogout: widget.onLogout,
+        onHome: _goHome,
+        onToggleDarkMode: widget.onToggleDarkMode,
+        isDarkMode: widget.isDarkMode,
+      ),
       AdminSettings(onHome: _goHome, isDarkMode: widget.isDarkMode),
       AttendanceSettings(onHome: _goHome, isDarkMode: widget.isDarkMode),
     ];
@@ -47,4 +63,4 @@ class _AdminMainState extends State<AdminMain> {
       body: pages[index],
     );
   }
-}
+}
