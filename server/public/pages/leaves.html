@@ -1,0 +1,110 @@
+<!-- ========================================
+     LEAVES PAGE - HALAMAN PENGAJUAN CUTI
+     ======================================== -->
+
+<!-- CARD FILTER PENGAJUAN CUTI -->
+<div class="card" style="margin-bottom: 20px;">
+    <div class="card-header">
+        <h2 class="card-title">Filter Pengajuan Cuti</h2>
+    </div>
+    
+    <!-- FORM FILTER -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <!-- FILTER STATUS -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="filterLeaveStatus">Status:</label>
+            <select id="filterLeaveStatus">
+                <option value="">-- Semua Status --</option>
+                <option value="pending">Menunggu Persetujuan</option>
+                <option value="approved">Disetujui</option>
+                <option value="rejected">Ditolak</option>
+            </select>
+        </div>
+        
+        <!-- FILTER JENIS CUTI -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="filterLeaveType">Jenis Cuti:</label>
+            <select id="filterLeaveType">
+                <option value="">-- Semua Jenis --</option>
+                <option value="annual">Cuti Tahunan</option>
+                <option value="sick">Cuti Sakit</option>
+                <option value="permission">Izin</option>
+                <option value="other">Lainnya</option>
+            </select>
+        </div>
+        
+        <!-- TOMBOL FILTER -->
+        <div style="display: flex; align-items: flex-end;">
+            <button class="btn btn-primary" onclick="applyLeaveFilter()" style="width: 100%;">🔍 Filter</button>
+        </div>
+    </div>
+</div>
+
+<!-- CARD DATA PENGAJUAN CUTI -->
+<div class="card">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Pengajuan Cuti</h2>
+    </div>
+    
+    <!-- TABEL CUTI -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Karyawan</th>
+                <th>Jenis Cuti</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Akhir</th>
+                <th>Alasan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="leaves-tbody">
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td colspan="7" style="text-align: center; color: #999;">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL DETAIL DAN PERSETUJUAN CUTI -->
+<div id="leaveModal" class="modal">
+    <div class="modal-content">
+        <!-- HEADER MODAL -->
+        <div class="modal-header">
+            <span class="modal-close" onclick="closeLeaveModal()">&times;</span>
+            <h2>Detail Pengajuan Cuti</h2>
+        </div>
+        
+        <!-- KONTEN DETAIL -->
+        <div style="margin-bottom: 20px;">
+            <!-- INFO KARYAWAN -->
+            <p><strong>Nama Karyawan:</strong> <span id="leave-employee-name"></span></p>
+            <p><strong>Departemen:</strong> <span id="leave-department"></span></p>
+            
+            <!-- INFO CUTI -->
+            <p><strong>Jenis Cuti:</strong> <span id="leave-type"></span></p>
+            <p><strong>Tanggal Mulai:</strong> <span id="leave-start-date"></span></p>
+            <p><strong>Tanggal Akhir:</strong> <span id="leave-end-date"></span></p>
+            <p><strong>Alasan:</strong> <span id="leave-reason"></span></p>
+            <p><strong>Status:</strong> <span id="leave-status"></span></p>
+        </div>
+        
+        <!-- FORM PERSETUJUAN -->
+        <div class="form-group">
+            <label for="leaveApprovalNotes">Catatan (opsional):</label>
+            <textarea id="leaveApprovalNotes" placeholder="Catatan persetujuan atau penolakan"></textarea>
+        </div>
+        
+        <!-- TOMBOL AKSI -->
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn btn-danger" onclick="rejectLeave()">❌ Tolak</button>
+            <button class="btn btn-success" onclick="approveLeave()">✓ Setujui</button>
+        </div>
+    </div>
+</div>
+
+<!-- LINK SCRIPT LEAVES PAGE -->
+<script src="/js/leaves.js"></script>

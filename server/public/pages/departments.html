@@ -1,0 +1,69 @@
+<!-- ========================================
+     DEPARTMENTS PAGE - HALAMAN DEPARTEMEN
+     ======================================== -->
+
+<!-- CARD DEPARTEMEN -->
+<div class="card">
+    <!-- HEADER CARD DENGAN TOMBOL TAMBAH -->
+    <div class="card-header">
+        <h2 class="card-title">Kelola Departemen</h2>
+        <button class="btn btn-success" onclick="openAddDepartmentModal()">+ Tambah Departemen</button>
+    </div>
+    
+    <!-- TABEL DATA DEPARTEMEN -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Departemen</th>
+                <th>Deskripsi</th>
+                <th>Jumlah Karyawan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="departments-tbody">
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999;">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL TAMBAH/EDIT DEPARTEMEN -->
+<div id="departmentModal" class="modal">
+    <div class="modal-content">
+        <!-- HEADER MODAL -->
+        <div class="modal-header">
+            <span class="modal-close" onclick="closeDepartmentModal()">&times;</span>
+            <h2 id="dept-modal-title">Tambah Departemen Baru</h2>
+        </div>
+        
+        <!-- FORM DEPARTEMEN -->
+        <form id="departmentForm" onsubmit="saveDepartment(event)">
+            <!-- HIDDEN FIELD UNTUK ID (SAAT EDIT) -->
+            <input type="hidden" id="departmentId">
+            
+            <!-- FIELD NAMA DEPARTEMEN -->
+            <div class="form-group">
+                <label for="departmentName">Nama Departemen:</label>
+                <input type="text" id="departmentName" required placeholder="Contoh: IT, HR, Finance">
+            </div>
+            
+            <!-- FIELD DESKRIPSI -->
+            <div class="form-group">
+                <label for="departmentDesc">Deskripsi:</label>
+                <textarea id="departmentDesc" placeholder="Deskripsi departemen (opsional)"></textarea>
+            </div>
+            
+            <!-- TOMBOL SUBMIT -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="btn btn-danger" onclick="closeDepartmentModal()">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- LINK SCRIPT DEPARTMENTS PAGE -->
+<script src="/js/departments.js"></script>

@@ -1,0 +1,109 @@
+<!-- ========================================
+     USERS PAGE - HALAMAN KELOLA PENGGUNA
+     ======================================== -->
+
+<!-- CARD PENGGUNA -->
+<div class="card">
+    <!-- HEADER CARD DENGAN TOMBOL TAMBAH -->
+    <div class="card-header">
+        <h2 class="card-title">Kelola Pengguna</h2>
+        <button class="btn btn-success" onclick="openAddUserModal()">+ Tambah Pengguna</button>
+    </div>
+    
+    <!-- TABEL DATA PENGGUNA -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Departemen</th>
+                <th>Posisi</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="users-tbody">
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td colspan="8" style="text-align: center; color: #999;">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL TAMBAH/EDIT PENGGUNA -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <!-- HEADER MODAL -->
+        <div class="modal-header">
+            <span class="modal-close" onclick="closeUserModal()">&times;</span>
+            <h2 id="modal-title">Tambah Pengguna Baru</h2>
+        </div>
+        
+        <!-- FORM PENGGUNA -->
+        <form id="userForm" onsubmit="saveUser(event)">
+            <!-- HIDDEN FIELD UNTUK ID (SAAT EDIT) -->
+            <input type="hidden" id="userId">
+            
+            <!-- FIELD NAMA -->
+            <div class="form-group">
+                <label for="userName">Nama:</label>
+                <input type="text" id="userName" required placeholder="Masukkan nama pengguna">
+            </div>
+            
+            <!-- FIELD EMAIL -->
+            <div class="form-group">
+                <label for="userEmail">Email:</label>
+                <input type="email" id="userEmail" required placeholder="Masukkan email">
+            </div>
+            
+            <!-- FIELD DEPARTEMEN -->
+            <div class="form-group">
+                <label for="userDepartment">Departemen:</label>
+                <select id="userDepartment" required>
+                    <option value="">-- Pilih Departemen --</option>
+                    <!-- OPTIONS AKAN DIMUAT DARI API -->
+                </select>
+            </div>
+            
+            <!-- FIELD POSISI -->
+            <div class="form-group">
+                <label for="userPosition">Posisi:</label>
+                <select id="userPosition" required>
+                    <option value="">-- Pilih Posisi --</option>
+                    <!-- OPTIONS AKAN DIMUAT DARI API -->
+                </select>
+            </div>
+            
+            <!-- FIELD ROLE -->
+            <div class="form-group">
+                <label for="userRole">Role:</label>
+                <select id="userRole" required>
+                    <option value="employee">Karyawan</option>
+                    <option value="manager">Manager</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+            <!-- FIELD STATUS -->
+            <div class="form-group">
+                <label for="userStatus">Status:</label>
+                <select id="userStatus" required>
+                    <option value="1">Aktif</option>
+                    <option value="0">Non-Aktif</option>
+                </select>
+            </div>
+            
+            <!-- TOMBOL SUBMIT -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="btn btn-danger" onclick="closeUserModal()">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- LINK SCRIPT USERS PAGE -->
+<script src="/js/users.js"></script>

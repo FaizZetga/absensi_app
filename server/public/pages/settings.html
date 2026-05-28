@@ -1,0 +1,110 @@
+<!-- ========================================
+     SETTINGS PAGE - HALAMAN PENGATURAN
+     ======================================== -->
+
+<!-- CARD PENGATURAN SISTEM -->
+<div class="card">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Pengaturan Sistem</h2>
+    </div>
+    
+    <!-- FORM PENGATURAN -->
+    <form id="settingsForm" onsubmit="saveSettings(event)">
+        <!-- SECTION JAM KERJA -->
+        <h3 style="margin-bottom: 15px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+            ⏰ Jam Kerja
+        </h3>
+        
+        <!-- FIELD JAM MASUK -->
+        <div class="form-group">
+            <label for="startTime">Jam Masuk:</label>
+            <input type="time" id="startTime" required>
+        </div>
+        
+        <!-- FIELD JAM KELUAR -->
+        <div class="form-group">
+            <label for="endTime">Jam Keluar:</label>
+            <input type="time" id="endTime" required>
+        </div>
+        
+        <!-- FIELD HARI KERJA -->
+        <div class="form-group">
+            <label for="workDays">Hari Kerja:</label>
+            <input type="text" id="workDays" required placeholder="Contoh: Senin - Jumat">
+        </div>
+        
+        <!-- SECTION LOKASI ABSENSI -->
+        <h3 style="margin-bottom: 15px; margin-top: 30px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+            📍 Lokasi Absensi (Koordinat Kantor)
+        </h3>
+        
+        <!-- FIELD LATITUDE -->
+        <div class="form-group">
+            <label for="centerLat">Latitude:</label>
+            <input type="number" id="centerLat" step="0.00000001" required placeholder="Contoh: -6.20880000">
+        </div>
+        
+        <!-- FIELD LONGITUDE -->
+        <div class="form-group">
+            <label for="centerLon">Longitude:</label>
+            <input type="number" id="centerLon" step="0.00000001" required placeholder="Contoh: 106.84560000">
+        </div>
+        
+        <!-- FIELD RADIUS ABSENSI -->
+        <div class="form-group">
+            <label for="maxRadius">Jarak Maksimal Absensi (meter):</label>
+            <input type="number" id="maxRadius" required placeholder="Contoh: 100">
+        </div>
+        
+        <!-- SECTION STATUS SISTEM -->
+        <h3 style="margin-bottom: 15px; margin-top: 30px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+            🔧 Status Sistem
+        </h3>
+        
+        <!-- FIELD STATUS AKTIF -->
+        <div class="form-group">
+            <label for="isEnabled">
+                <input type="checkbox" id="isEnabled"> Sistem Aktif
+            </label>
+            <small style="color: #666;">Centang jika sistem absensi sudah aktif dan siap digunakan</small>
+        </div>
+        
+        <!-- TOMBOL SUBMIT -->
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+            <button type="reset" class="btn btn-danger">↻ Reset</button>
+            <button type="submit" class="btn btn-success">💾 Simpan Pengaturan</button>
+        </div>
+    </form>
+</div>
+
+<!-- CARD INFORMASI SYSTEM -->
+<div class="card" style="margin-top: 30px;">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Informasi Sistem</h2>
+    </div>
+    
+    <!-- INFO TABEL -->
+    <table style="width: auto;">
+        <tr>
+            <td style="font-weight: bold; padding: 10px; border: none;">Versi Aplikasi:</td>
+            <td style="padding: 10px; border: none;">1.0.0</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; padding: 10px; border: none;">Database:</td>
+            <td style="padding: 10px; border: none;">MySQL</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; padding: 10px; border: none;">Server:</td>
+            <td style="padding: 10px; border: none;">Node.js + Express</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; padding: 10px; border: none;">Waktu Server:</td>
+            <td style="padding: 10px; border: none;" id="server-time">Loading...</td>
+        </tr>
+    </table>
+</div>
+
+<!-- LINK SCRIPT SETTINGS PAGE -->
+<script src="/js/settings.js"></script>

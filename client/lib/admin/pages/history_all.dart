@@ -47,7 +47,7 @@ class _HistoryAllPageState extends State<HistoryAllPage> {
         filteredHistoryData = allHistoryData;
       } else {
         filteredHistoryData = allHistoryData.where((item) {
-          final userName = (item['user_name'] ?? '').toString().toLowerCase();
+          final userName = (item['employee_name'] ?? item['user_name'] ?? '').toString().toLowerCase();
           return userName.contains(query.toLowerCase());
         }).toList();
       }
@@ -149,7 +149,7 @@ class _HistoryAllPageState extends State<HistoryAllPage> {
                               itemCount: filteredHistoryData.length,
                               itemBuilder: (context, index) {
                                 final item = filteredHistoryData[index];
-                                final userName = item['user_name'] ?? 'Unknown';
+                                final userName = item['employee_name'] ?? item['user_name'] ?? 'Unknown';
 
                                 String dateStr = item['date'] ?? '-';
                                 if (dateStr.length > 10) dateStr = dateStr.substring(0, 10);
@@ -159,7 +159,7 @@ class _HistoryAllPageState extends State<HistoryAllPage> {
                                     ? 'Tepat Waktu'
                                     : item['status'] == 'late'
                                         ? 'Terlambat'
-                                        : item['status'] ?? '-';
+                                        : item['status'] ?? 'Tidak Diketahui';
 
                                 final bool isGood = item['status'] == 'on_time';
                                 final statusColor = isGood ? Color(0xFF10B981) : Color(0xFFF59E0B);
