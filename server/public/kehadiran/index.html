@@ -1,29 +1,29 @@
 <!-- ========================================
-     ATTENDANCE PAGE - HALAMAN KEHADIRAN
+     ATTENDANCE PAGE - HALAMAN KEHADIRAN (INDEX)
      ======================================== -->
 
 <!-- CARD FILTER DAN PENCARIAN -->
-<div class="card" style="margin-bottom: 20px;">
+<div class="card card-filter">
     <div class="card-header">
         <h2 class="card-title">Filter Kehadiran</h2>
     </div>
     
     <!-- FORM FILTER -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <div class="filter-grid">
         <!-- FILTER TANGGAL MULAI -->
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group filter-group">
             <label for="filterDateFrom">Dari Tanggal:</label>
             <input type="date" id="filterDateFrom">
         </div>
         
         <!-- FILTER TANGGAL AKHIR -->
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group filter-group">
             <label for="filterDateTo">Sampai Tanggal:</label>
             <input type="date" id="filterDateTo">
         </div>
         
         <!-- FILTER STATUS -->
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group filter-group">
             <label for="filterStatus">Status:</label>
             <select id="filterStatus">
                 <option value="">-- Semua Status --</option>
@@ -34,7 +34,7 @@
         </div>
         
         <!-- TOMBOL FILTER -->
-        <div style="display: flex; align-items: flex-end;">
+        <div class="filter-btn-container">
             <button class="btn btn-primary" onclick="applyAttendanceFilter()" style="width: 100%;">🔍 Filter</button>
         </div>
     </div>
@@ -45,6 +45,7 @@
     <!-- HEADER CARD -->
     <div class="card-header">
         <h2 class="card-title">Data Kehadiran</h2>
+        <button class="btn btn-success btn-small" onclick="downloadAttendanceReport()">📥 Excel</button>
     </div>
     
     <!-- TABEL KEHADIRAN -->
@@ -67,6 +68,3 @@
         </tbody>
     </table>
 </div>
-
-<!-- LINK SCRIPT ATTENDANCE PAGE -->
-<script src="/js/attendance.js"></script>

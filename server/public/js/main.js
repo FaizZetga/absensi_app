@@ -6,8 +6,19 @@
 // FUNGSI UNTUK LOAD HALAMAN DINAMIS
 async function loadPage(pageName) {
     try {
+        // MAP NAMA HALAMAN KE FOLDER MODUL YANG BARU
+        const folderMap = {
+            'dashboard': 'dashboard',
+            'users': 'karyawan',
+            'attendance': 'kehadiran',
+            'leaves': 'pengajuan_cuti',
+            'settings': 'pengaturan'
+        };
+        
+        const folder = folderMap[pageName] || pageName;
+        
         // MENGAMBIL KONTEN HTML HALAMAN
-        const response = await fetch(`/pages/${pageName}.html`);
+        const response = await fetch(`/${folder}/index.html`);
         
         // CEK JIKA RESPONSE BERHASIL
         if (!response.ok) {
@@ -17,8 +28,66 @@ async function loadPage(pageName) {
         // MENDAPATKAN KONTEN HTML
         const htmlContent = await response.text();
         
-        // MENGUPDATE KONTEN HALAMAN
-        document.getElementById('page-content').innerHTML = htmlContent;
+        // CLEANUP INTERVAL SEBELUMNYA AGAR TIDAK MEMORY LEAK
+        if (window.dashboardInterval) {
+            clearInterval(window.dashboardInterval);
+            window.dashboardInterval = null;
+        }
+        if (window.settingsInterval) {
+            clearInterval(window.settingsInterval);
+            window.settingsInterval = null;
+        }
+        
+        // MENGUPDATE KONTEN HALAMAN UTAMA
+        const pageContentEl = document.getElementById('page-content');
+        pageContentEl.innerHTML = htmlContent;
+        
+        // HAPUS SCRIPT DAN STYLE DINAMIS SEBELUMNYA
+        document.querySelectorAll('.dynamic-style').forEach(el => el.remove());
+        document.querySelectorAll('.dynamic-script').forEach(el => el.remove());
+        
+        // LOAD CSS DINAMIS UNTUK MODUL INI
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `/${folder}/index.css`;
+        link.className = 'dynamic-style';
+        document.head.appendChild(link);
+        
+        // JIKA MODUL MEMILIKI UPDATE MODAL/FORM (KARYAWAN & CUTI)
+        if (folder === 'karyawan' || folder === 'pengajuan_cuti') {
+            // LOAD MODAL HTML
+            const updateRes = await fetch(`/${folder}/update.html`);
+            if (updateRes.ok) {
+                const updateHtml = await updateRes.text();
+                const container = document.getElementById('update-container');
+                if (container) {
+                    container.innerHTML = updateHtml;
+                }
+            }
+            
+            // LOAD UPDATE CSS
+            const updateLink = document.createElement('link');
+            updateLink.rel = 'stylesheet';
+            updateLink.href = `/${folder}/update.css`;
+            updateLink.className = 'dynamic-style';
+            document.head.appendChild(updateLink);
+        }
+        
+        // LOAD JS UTAMA UNTUK MODUL INI SECARA DINAMIS
+        const script = document.createElement('script');
+        script.src = `/${folder}/index.js`;
+        script.className = 'dynamic-script';
+        script.defer = true;
+        document.body.appendChild(script);
+        
+        // JIKA MEMILIKI LOGIC UPDATE.JS SENDIRI (KARYAWAN & CUTI)
+        if (folder === 'karyawan' || folder === 'pengajuan_cuti') {
+            const updateScript = document.createElement('script');
+            updateScript.src = `/${folder}/update.js`;
+            updateScript.className = 'dynamic-script';
+            updateScript.defer = true;
+            document.body.appendChild(updateScript);
+        }
         
         // UPDATE HEADER TITLE SESUAI HALAMAN
         updateHeaderTitle(pageName);

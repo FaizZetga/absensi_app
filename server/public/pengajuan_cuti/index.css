@@ -1,0 +1,22 @@
+/* ========================================
+   PENGAJUAN CUTI STYLING - INDEX.CSS
+   ======================================== */
+
+.card-filter {
+    margin-bottom: 20px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filter-group {
+    margin-bottom: 0 !important;
+}
+
+.filter-btn-container {
+    display: flex;
+    align-items: flex-end;
+}

@@ -1,5 +1,5 @@
 // ========================================
-// SCRIPT SETTINGS - SETTINGS.JS
+// SCRIPT PENGATURAN - INDEX.JS
 // Mengelola pengaturan sistem
 // ========================================
 
@@ -100,14 +100,16 @@ function updateServerTime() {
         if (timeElement) {
             timeElement.textContent = timeString;
         }
-        
     } catch (error) {
         console.error('Error updating server time:', error);
     }
 }
 
-// UPDATE WAKTU SETIAP 1 DETIK
-setInterval(updateServerTime, 1000);
-
 // LOAD DATA PENGATURAN SAAT HALAMAN DIMUAT
 loadSettings();
+
+// UPDATE SERVER TIME SETIAP DETIK
+if (window.settingsInterval) {
+    clearInterval(window.settingsInterval);
+}
+window.settingsInterval = setInterval(updateServerTime, 1000);

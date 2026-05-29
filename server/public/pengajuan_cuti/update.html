@@ -1,0 +1,36 @@
+<!-- MODAL DETAIL DAN PERSETUJUAN CUTI -->
+<div id="leaveModal" class="modal">
+    <div class="modal-content">
+        <!-- HEADER MODAL -->
+        <div class="modal-header">
+            <span class="modal-close" onclick="closeLeaveModal()">&times;</span>
+            <h2>Detail Pengajuan Cuti</h2>
+        </div>
+        
+        <!-- KONTEN DETAIL -->
+        <div class="detail-container">
+            <!-- INFO KARYAWAN -->
+            <p><strong>Nama Karyawan:</strong> <span id="leave-employee-name"></span></p>
+            <p><strong>Departemen:</strong> <span id="leave-department"></span></p>
+            
+            <!-- INFO CUTI -->
+            <p><strong>Jenis Cuti:</strong> <span id="leave-type"></span></p>
+            <p><strong>Tanggal Mulai:</strong> <span id="leave-start-date"></span></p>
+            <p><strong>Tanggal Akhir:</strong> <span id="leave-end-date"></span></p>
+            <p><strong>Alasan:</strong> <span id="leave-reason"></span></p>
+            <p><strong>Status:</strong> <span id="leave-status"></span></p>
+        </div>
+        
+        <!-- FORM PERSETUJUAN -->
+        <div class="form-group">
+            <label for="leaveApprovalNotes">Catatan (opsional):</label>
+            <textarea id="leaveApprovalNotes" placeholder="Catatan persetujuan atau penolakan"></textarea>
+        </div>
+        
+        <!-- ACTION BUTTONS -->
+        <div class="form-actions">
+            <button class="btn btn-danger" onclick="rejectLeave()">❌ Tolak</button>
+            <button class="btn btn-success" onclick="approveLeave()">✓ Setujui</button>
+        </div>
+    </div>
+</div>

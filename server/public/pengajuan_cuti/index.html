@@ -1,17 +1,17 @@
 <!-- ========================================
-     LEAVES PAGE - HALAMAN PENGAJUAN CUTI
+     LEAVES PAGE - HALAMAN PENGAJUAN CUTI (INDEX)
      ======================================== -->
 
 <!-- CARD FILTER PENGAJUAN CUTI -->
-<div class="card" style="margin-bottom: 20px;">
+<div class="card card-filter">
     <div class="card-header">
         <h2 class="card-title">Filter Pengajuan Cuti</h2>
     </div>
     
     <!-- FORM FILTER -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <div class="filter-grid">
         <!-- FILTER STATUS -->
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group filter-group">
             <label for="filterLeaveStatus">Status:</label>
             <select id="filterLeaveStatus">
                 <option value="">-- Semua Status --</option>
@@ -22,7 +22,7 @@
         </div>
         
         <!-- FILTER JENIS CUTI -->
-        <div class="form-group" style="margin-bottom: 0;">
+        <div class="form-group filter-group">
             <label for="filterLeaveType">Jenis Cuti:</label>
             <select id="filterLeaveType">
                 <option value="">-- Semua Jenis --</option>
@@ -34,7 +34,7 @@
         </div>
         
         <!-- TOMBOL FILTER -->
-        <div style="display: flex; align-items: flex-end;">
+        <div class="filter-btn-container">
             <button class="btn btn-primary" onclick="applyLeaveFilter()" style="width: 100%;">🔍 Filter</button>
         </div>
     </div>
@@ -69,42 +69,5 @@
     </table>
 </div>
 
-<!-- MODAL DETAIL DAN PERSETUJUAN CUTI -->
-<div id="leaveModal" class="modal">
-    <div class="modal-content">
-        <!-- HEADER MODAL -->
-        <div class="modal-header">
-            <span class="modal-close" onclick="closeLeaveModal()">&times;</span>
-            <h2>Detail Pengajuan Cuti</h2>
-        </div>
-        
-        <!-- KONTEN DETAIL -->
-        <div style="margin-bottom: 20px;">
-            <!-- INFO KARYAWAN -->
-            <p><strong>Nama Karyawan:</strong> <span id="leave-employee-name"></span></p>
-            <p><strong>Departemen:</strong> <span id="leave-department"></span></p>
-            
-            <!-- INFO CUTI -->
-            <p><strong>Jenis Cuti:</strong> <span id="leave-type"></span></p>
-            <p><strong>Tanggal Mulai:</strong> <span id="leave-start-date"></span></p>
-            <p><strong>Tanggal Akhir:</strong> <span id="leave-end-date"></span></p>
-            <p><strong>Alasan:</strong> <span id="leave-reason"></span></p>
-            <p><strong>Status:</strong> <span id="leave-status"></span></p>
-        </div>
-        
-        <!-- FORM PERSETUJUAN -->
-        <div class="form-group">
-            <label for="leaveApprovalNotes">Catatan (opsional):</label>
-            <textarea id="leaveApprovalNotes" placeholder="Catatan persetujuan atau penolakan"></textarea>
-        </div>
-        
-        <!-- TOMBOL AKSI -->
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button class="btn btn-danger" onclick="rejectLeave()">❌ Tolak</button>
-            <button class="btn btn-success" onclick="approveLeave()">✓ Setujui</button>
-        </div>
-    </div>
-</div>
-
-<!-- LINK SCRIPT LEAVES PAGE -->
-<script src="/js/leaves.js"></script>
+<!-- CONTAINER UNTUK DETAIL/PERSETUJUAN MODAL -->
+<div id="update-container"></div>

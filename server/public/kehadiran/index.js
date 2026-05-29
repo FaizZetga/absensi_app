@@ -1,5 +1,5 @@
 // ========================================
-// SCRIPT ATTENDANCE - ATTENDANCE.JS
+// SCRIPT KEHADIRAN - INDEX.JS
 // Menampilkan dan mengatur data kehadiran
 // ========================================
 
@@ -34,11 +34,11 @@ async function loadAttendance() {
         const tbody = document.getElementById('attendance-tbody');
         
         // KOSONGKAN TBODY
-        tbody.innerHTML = '';
+        if (tbody) tbody.innerHTML = '';
         
         // CEK JIKA ADA DATA
         if (!attendances || attendances.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">Tidak ada data kehadiran</td></tr>';
+            if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">Tidak ada data kehadiran</td></tr>';
             return;
         }
         
@@ -73,7 +73,7 @@ async function loadAttendance() {
             `;
             
             // TAMBAHKAN BARIS KE TABEL
-            tbody.appendChild(row);
+            if (tbody) tbody.appendChild(row);
         });
         
     } catch (error) {
@@ -97,7 +97,7 @@ function applyAttendanceFilter() {
 function downloadAttendanceReport() {
     try {
         // BUAT URL DENGAN QUERY PARAMETER FILTER
-        let url = '/attendance/export';
+        let url = '/api/attendance/export';
         const params = new URLSearchParams();
         
         // TAMBAHKAN FILTER JIKA ADA
@@ -135,8 +135,11 @@ function setDefaultDateRange() {
     const dateTo = today.toISOString().split('T')[0];
     
     // SET VALUE INPUT
-    document.getElementById('filterDateFrom').value = dateFrom;
-    document.getElementById('filterDateTo').value = dateTo;
+    const fromInput = document.getElementById('filterDateFrom');
+    const toInput = document.getElementById('filterDateTo');
+    
+    if (fromInput) fromInput.value = dateFrom;
+    if (toInput) toInput.value = dateTo;
     
     // APPLY FILTER DENGAN TANGGAL DEFAULT
     attendanceFilter.dateFrom = dateFrom;

@@ -1,0 +1,19 @@
+/* ========================================
+   LEAVE UPDATE MODAL STYLING - UPDATE.CSS
+   ======================================== */
+
+.detail-container {
+    margin-bottom: 20px;
+}
+
+.detail-container p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}

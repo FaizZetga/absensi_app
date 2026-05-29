@@ -128,4 +128,7 @@ async function refreshAttendance() {
 loadDashboardData();
 
 // REFRESH DATA SETIAP 30 DETIK
-setInterval(loadDashboardData, 30000);
+if (window.dashboardInterval) {
+    clearInterval(window.dashboardInterval);
+}
+window.dashboardInterval = setInterval(loadDashboardData, 30000);

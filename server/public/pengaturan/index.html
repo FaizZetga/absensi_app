@@ -1,5 +1,5 @@
 <!-- ========================================
-     SETTINGS PAGE - HALAMAN PENGATURAN
+     SETTINGS PAGE - HALAMAN PENGATURAN (INDEX)
      ======================================== -->
 
 <!-- CARD PENGATURAN SISTEM -->
@@ -12,7 +12,7 @@
     <!-- FORM PENGATURAN -->
     <form id="settingsForm" onsubmit="saveSettings(event)">
         <!-- SECTION JAM KERJA -->
-        <h3 style="margin-bottom: 15px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+        <h3 class="section-title">
             ⏰ Jam Kerja
         </h3>
         
@@ -35,7 +35,7 @@
         </div>
         
         <!-- SECTION LOKASI ABSENSI -->
-        <h3 style="margin-bottom: 15px; margin-top: 30px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+        <h3 class="section-title section-title-spacing">
             📍 Lokasi Absensi (Koordinat Kantor)
         </h3>
         
@@ -58,7 +58,7 @@
         </div>
         
         <!-- SECTION STATUS SISTEM -->
-        <h3 style="margin-bottom: 15px; margin-top: 30px; color: var(--dark-color); border-bottom: 2px solid var(--light-color); padding-bottom: 10px;">
+        <h3 class="section-title section-title-spacing">
             🔧 Status Sistem
         </h3>
         
@@ -67,11 +67,11 @@
             <label for="isEnabled">
                 <input type="checkbox" id="isEnabled"> Sistem Aktif
             </label>
-            <small style="color: #666;">Centang jika sistem absensi sudah aktif dan siap digunakan</small>
+            <small class="helper-text">Centang jika sistem absensi sudah aktif dan siap digunakan</small>
         </div>
         
         <!-- TOMBOL SUBMIT -->
-        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+        <div class="form-actions-settings">
             <button type="reset" class="btn btn-danger">↻ Reset</button>
             <button type="submit" class="btn btn-success">💾 Simpan Pengaturan</button>
         </div>
@@ -79,32 +79,29 @@
 </div>
 
 <!-- CARD INFORMASI SYSTEM -->
-<div class="card" style="margin-top: 30px;">
+<div class="card info-card">
     <!-- HEADER CARD -->
     <div class="card-header">
         <h2 class="card-title">Informasi Sistem</h2>
     </div>
     
     <!-- INFO TABEL -->
-    <table style="width: auto;">
+    <table class="info-table">
         <tr>
-            <td style="font-weight: bold; padding: 10px; border: none;">Versi Aplikasi:</td>
-            <td style="padding: 10px; border: none;">1.0.0</td>
+            <td class="info-table-label">Versi Aplikasi:</td>
+            <td class="info-table-value">1.0.0</td>
         </tr>
         <tr>
-            <td style="font-weight: bold; padding: 10px; border: none;">Database:</td>
-            <td style="padding: 10px; border: none;">MySQL</td>
+            <td class="info-table-label">Database:</td>
+            <td class="info-table-value">MySQL</td>
         </tr>
         <tr>
-            <td style="font-weight: bold; padding: 10px; border: none;">Server:</td>
-            <td style="padding: 10px; border: none;">Node.js + Express</td>
+            <td class="info-table-label">Server:</td>
+            <td class="info-table-value">Node.js + Express</td>
         </tr>
         <tr>
-            <td style="font-weight: bold; padding: 10px; border: none;">Waktu Server:</td>
-            <td style="padding: 10px; border: none;" id="server-time">Loading...</td>
+            <td class="info-table-label">Waktu Server:</td>
+            <td class="info-table-value" id="server-time">Loading...</td>
         </tr>
     </table>
 </div>
-
-<!-- LINK SCRIPT SETTINGS PAGE -->
-<script src="/js/settings.js"></script>

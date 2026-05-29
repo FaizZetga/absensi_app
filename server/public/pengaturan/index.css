@@ -1,0 +1,44 @@
+/* ========================================
+   PENGATURAN STYLING - INDEX.CSS
+   ======================================== */
+
+.section-title {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    border-bottom: 2px solid var(--light-color);
+    padding-bottom: 10px;
+}
+
+.section-title-spacing {
+    margin-top: 30px;
+}
+
+.form-actions-settings {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.helper-text {
+    color: #666;
+}
+
+.info-card {
+    margin-top: 30px;
+}
+
+.info-table {
+    width: auto;
+}
+
+.info-table-label {
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+}
+
+.info-table-value {
+    padding: 10px;
+    border: none;
+}
