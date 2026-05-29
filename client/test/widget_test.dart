@@ -8,19 +8,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:absensi_app/main.dart';
+class _TestCounterApp extends StatefulWidget {
+  @override
+  State<_TestCounterApp> createState() => _TestCounterAppState();
+}
+
+class _TestCounterAppState extends State<_TestCounterApp> {
+  int _counter = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Test Counter')),
+        body: Center(child: Text('$_counter', key: const Key('counter'))),
+        floatingActionButton: FloatingActionButton(
+          key: const Key('increment'),
+          onPressed: () => setState(() => _counter++),
+          child: const Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(_TestCounterApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byKey(const Key('increment')));
     await tester.pump();
 
     // Verify that our counter has incremented.

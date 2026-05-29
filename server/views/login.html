@@ -1,0 +1,138 @@
+<!-- ========================================
+     HALAMAN LOGIN SEDERHANA
+     ======================================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- META TAGS UNTUK CHARSET DAN VIEWPORT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- JUDUL HALAMAN -->
+    <title>Login Admin - Sistem Absensi</title>
+    <!-- LINK STYLESHEET SEDERHANA -->
+    <style>
+        /* ATURAN DASAR BODY */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fb;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        /* CARD LOGIN */
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+        }
+        
+        /* JUDUL LOGIN */
+        .login-card h1 {
+            font-size: 26px;
+            margin-bottom: 10px;
+            letter-spacing: -0.4px;
+        }
+        
+        /* DESKRIPSI SINGKAT */
+        .login-card p {
+            margin-bottom: 24px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* GROUP FORM */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        /* LABEL FORM */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        /* INPUT TEXT */
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d9e2ec;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+        
+        /* FOCUS INPUT */
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 4px rgba(52,152,219,0.1);
+        }
+        
+        /* TOMBOL LOGIN */
+        .btn-primary {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 10px;
+            background-color: #3498db;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        /* HOVER TOMBOL LOGIN */
+        .btn-primary:hover {
+            background-color: #2c7acb;
+        }
+        
+        /* LINK KEMBALI */
+        .link-home {
+            display: block;
+            margin-top: 18px;
+            color: #3498db;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- CONTAINER LOGIN -->
+    <div class="login-card">
+        <!-- JUDUL LOGIN -->
+        <h1>Login Admin</h1>
+        <!-- INFORMASI LOGIN -->
+        <p>Masuk dengan akun admin Anda untuk mengelola sistem absensi.</p>
+        
+        <!-- FORM LOGIN SEDERHANA -->
+        <form onsubmit="event.preventDefault(); window.location.href='/'">
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="admin@domain.com" required>
+            </div>
+            
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" placeholder="********" required>
+            </div>
+            
+            <!-- TOMBOL LOGIN -->
+            <button type="submit" class="btn-primary">Masuk</button>
+        </form>
+        
+        <!-- LINK KEMBALI KE DASHBOARD -->
+        <a href="/" class="link-home">Kembali ke Dashboard</a>
+    </div>
+</body>
+</html>

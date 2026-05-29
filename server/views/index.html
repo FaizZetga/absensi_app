@@ -1,0 +1,70 @@
+<!-- ========================================
+     LAYOUT UTAMA - ADMIN DASHBOARD
+     ======================================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- META TAGS UNTUK CHARSET DAN VIEWPORT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- JUDUL HALAMAN -->
+    <title>Admin Dashboard - Sistem Absensi</title>
+    <!-- LINK CSS UTAMA -->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- CONTAINER UTAMA APP -->
+    <div class="app-container">
+        <!-- SIDEBAR NAVIGASI -->
+        <aside class="sidebar">
+            <!-- HEADER SIDEBAR DENGAN LOGO -->
+            <div class="sidebar-header">
+                📊 Admin Panel
+            </div>
+            
+            <!-- MENU NAVIGASI SIDEBAR -->
+            <ul class="sidebar-menu">
+                <!-- MENU DASHBOARD -->
+                <li><a href="/" class="nav-link active" data-page="dashboard">🏠 Dashboard</a></li>
+                
+                <!-- MENU PENGGUNA -->
+                <li><a href="#" class="nav-link" data-page="users">👥 Karyawan</a></li>
+                
+                <!-- MENU KEHADIRAN -->
+                <li><a href="#" class="nav-link" data-page="attendance">✓ Kehadiran</a></li>
+                
+                <!-- MENU CUTI -->
+                <li><a href="#" class="nav-link" data-page="leaves">📅 Pengajuan Cuti</a></li>
+                
+                <!-- MENU PENGATURAN -->
+                <li><a href="#" class="nav-link" data-page="settings">⚙️ Pengaturan</a></li>
+            </ul>
+        </aside>
+        
+        <!-- AREA KONTEN UTAMA -->
+        <div class="main-content">
+            <!-- HEADER TOP BAR -->
+            <header class="header">
+                <!-- JUDUL HALAMAN YANG AKTIF -->
+                <h1 class="header-title">Dashboard</h1>
+                
+                <!-- INFO USER DAN LOGOUT -->
+                <div class="user-info">
+                    <span id="current-user">Admin</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </header>
+            
+            <!-- AREA KONTEN DINAMIS -->
+            <div class="content" id="page-content">
+                <!-- KONTEN HALAMAN AKAN DIMUAT DI SINI -->
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SCRIPT UTAMA APLIKASI -->
+    <script src="/js/main.js"></script>
+    <!-- SCRIPT HALAMAN SPESIFIK AKAN DILOAD DINAMIS -->
+</body>
+</html>

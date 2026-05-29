@@ -1,0 +1,94 @@
+<!-- ========================================
+     DASHBOARD PAGE - HALAMAN UTAMA ADMIN
+     ======================================== -->
+
+<!-- CARD STATISTIK DASHBOARD -->
+<div class="stat-container">
+    <!-- STATISTIK TOTAL KARYAWAN -->
+    <div class="stat-card">
+        <div class="stat-card-label">Total Karyawan</div>
+        <div class="stat-card-value" id="total-employees">0</div>
+    </div>
+    
+    <!-- STATISTIK TOTAL DEPARTEMEN -->
+    <div class="stat-card success">
+        <div class="stat-card-label">Total Departemen</div>
+        <div class="stat-card-value" id="total-departments">0</div>
+    </div>
+    
+    <!-- STATISTIK KEHADIRAN HARI INI -->
+    <div class="stat-card warning">
+        <div class="stat-card-label">Kehadiran Hari Ini</div>
+        <div class="stat-card-value" id="today-attendance">0</div>
+    </div>
+    
+    <!-- STATISTIK PENGAJUAN CUTI PENDING -->
+    <div class="stat-card danger">
+        <div class="stat-card-label">Cuti Menunggu Persetujuan</div>
+        <div class="stat-card-value" id="pending-leaves">0</div>
+    </div>
+</div>
+
+<!-- CARD RINGKASAN KEHADIRAN -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Ringkasan Kehadiran Hari Ini</h2>
+        <button class="btn btn-primary btn-small" onclick="refreshAttendance()">🔄 Refresh</button>
+    </div>
+    
+    <!-- TABEL RINGKASAN KEHADIRAN -->
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Jumlah</th>
+                <th>Persentase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td><span class="badge badge-success">Tepat Waktu</span></td>
+                <td id="on-time">0</td>
+                <td id="on-time-percent">0%</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-warning">Terlambat</span></td>
+                <td id="late">0</td>
+                <td id="late-percent">0%</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-danger">Tidak Hadir</span></td>
+                <td id="absent">0</td>
+                <td id="absent-percent">0%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- CARD PENGAJUAN CUTI TERBARU -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Pengajuan Cuti Terbaru</h2>
+        <a href="#" class="btn btn-primary btn-small" onclick="loadPage('leaves')">Lihat Semua →</a>
+    </div>
+    
+    <!-- TABEL CUTI TERBARU -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Karyawan</th>
+                <th>Jenis Cuti</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="leave-requests-tbody">
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999;">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

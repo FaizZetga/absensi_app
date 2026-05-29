@@ -1,0 +1,107 @@
+<!-- ========================================
+     SETTINGS PAGE - HALAMAN PENGATURAN (INDEX)
+     ======================================== -->
+
+<!-- CARD PENGATURAN SISTEM -->
+<div class="card">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Pengaturan Sistem</h2>
+    </div>
+    
+    <!-- FORM PENGATURAN -->
+    <form id="settingsForm" onsubmit="saveSettings(event)">
+        <!-- SECTION JAM KERJA -->
+        <h3 class="section-title">
+            ⏰ Jam Kerja
+        </h3>
+        
+        <!-- FIELD JAM MASUK -->
+        <div class="form-group">
+            <label for="startTime">Jam Masuk:</label>
+            <input type="time" id="startTime" required>
+        </div>
+        
+        <!-- FIELD JAM KELUAR -->
+        <div class="form-group">
+            <label for="endTime">Jam Keluar:</label>
+            <input type="time" id="endTime" required>
+        </div>
+        
+        <!-- FIELD HARI KERJA -->
+        <div class="form-group">
+            <label for="workDays">Hari Kerja:</label>
+            <input type="text" id="workDays" required placeholder="Contoh: Senin - Jumat">
+        </div>
+        
+        <!-- SECTION LOKASI ABSENSI -->
+        <h3 class="section-title section-title-spacing">
+            📍 Lokasi Absensi (Koordinat Kantor)
+        </h3>
+        
+        <!-- FIELD LATITUDE -->
+        <div class="form-group">
+            <label for="centerLat">Latitude:</label>
+            <input type="number" id="centerLat" step="0.00000001" required placeholder="Contoh: -6.20880000">
+        </div>
+        
+        <!-- FIELD LONGITUDE -->
+        <div class="form-group">
+            <label for="centerLon">Longitude:</label>
+            <input type="number" id="centerLon" step="0.00000001" required placeholder="Contoh: 106.84560000">
+        </div>
+        
+        <!-- FIELD RADIUS ABSENSI -->
+        <div class="form-group">
+            <label for="maxRadius">Jarak Maksimal Absensi (meter):</label>
+            <input type="number" id="maxRadius" required placeholder="Contoh: 100">
+        </div>
+        
+        <!-- SECTION STATUS SISTEM -->
+        <h3 class="section-title section-title-spacing">
+            🔧 Status Sistem
+        </h3>
+        
+        <!-- FIELD STATUS AKTIF -->
+        <div class="form-group">
+            <label for="isEnabled">
+                <input type="checkbox" id="isEnabled"> Sistem Aktif
+            </label>
+            <small class="helper-text">Centang jika sistem absensi sudah aktif dan siap digunakan</small>
+        </div>
+        
+        <!-- TOMBOL SUBMIT -->
+        <div class="form-actions-settings">
+            <button type="reset" class="btn btn-danger">↻ Reset</button>
+            <button type="submit" class="btn btn-success">💾 Simpan Pengaturan</button>
+        </div>
+    </form>
+</div>
+
+<!-- CARD INFORMASI SYSTEM -->
+<div class="card info-card">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Informasi Sistem</h2>
+    </div>
+    
+    <!-- INFO TABEL -->
+    <table class="info-table">
+        <tr>
+            <td class="info-table-label">Versi Aplikasi:</td>
+            <td class="info-table-value">1.0.0</td>
+        </tr>
+        <tr>
+            <td class="info-table-label">Database:</td>
+            <td class="info-table-value">MySQL</td>
+        </tr>
+        <tr>
+            <td class="info-table-label">Server:</td>
+            <td class="info-table-value">Node.js + Express</td>
+        </tr>
+        <tr>
+            <td class="info-table-label">Waktu Server:</td>
+            <td class="info-table-value" id="server-time">Loading...</td>
+        </tr>
+    </table>
+</div>

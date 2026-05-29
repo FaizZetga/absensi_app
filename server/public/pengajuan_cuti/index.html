@@ -1,0 +1,73 @@
+<!-- ========================================
+     LEAVES PAGE - HALAMAN PENGAJUAN CUTI (INDEX)
+     ======================================== -->
+
+<!-- CARD FILTER PENGAJUAN CUTI -->
+<div class="card card-filter">
+    <div class="card-header">
+        <h2 class="card-title">Filter Pengajuan Cuti</h2>
+    </div>
+    
+    <!-- FORM FILTER -->
+    <div class="filter-grid">
+        <!-- FILTER STATUS -->
+        <div class="form-group filter-group">
+            <label for="filterLeaveStatus">Status:</label>
+            <select id="filterLeaveStatus">
+                <option value="">-- Semua Status --</option>
+                <option value="pending">Menunggu Persetujuan</option>
+                <option value="approved">Disetujui</option>
+                <option value="rejected">Ditolak</option>
+            </select>
+        </div>
+        
+        <!-- FILTER JENIS CUTI -->
+        <div class="form-group filter-group">
+            <label for="filterLeaveType">Jenis Cuti:</label>
+            <select id="filterLeaveType">
+                <option value="">-- Semua Jenis --</option>
+                <option value="annual">Cuti Tahunan</option>
+                <option value="sick">Cuti Sakit</option>
+                <option value="permission">Izin</option>
+                <option value="other">Lainnya</option>
+            </select>
+        </div>
+        
+        <!-- TOMBOL FILTER -->
+        <div class="filter-btn-container">
+            <button class="btn btn-primary" onclick="applyLeaveFilter()" style="width: 100%;">🔍 Filter</button>
+        </div>
+    </div>
+</div>
+
+<!-- CARD DATA PENGAJUAN CUTI -->
+<div class="card">
+    <!-- HEADER CARD -->
+    <div class="card-header">
+        <h2 class="card-title">Pengajuan Cuti</h2>
+    </div>
+    
+    <!-- TABEL CUTI -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Karyawan</th>
+                <th>Jenis Cuti</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Akhir</th>
+                <th>Alasan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="leaves-tbody">
+            <!-- DATA AKAN DIMUAT DARI API -->
+            <tr>
+                <td colspan="7" style="text-align: center; color: #999;">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- CONTAINER UNTUK DETAIL/PERSETUJUAN MODAL -->
+<div id="update-container"></div>

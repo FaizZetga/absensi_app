@@ -44,6 +44,43 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+<<<<<<< HEAD
 # Server dependencies and secrets
 server/node_modules/
 server/.env
+=======
+
+backend/node_modules/
+backend/.env
+
+.antigravitycli/
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+
+# Android
+android/.gradle/
+android/app/build/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+
+# VSCode
+.vscode/
+
+# IntelliJ / Android Studio
+.idea/
+
+# Generated
+*.apk
+*.aab
+*.so
+*.dillclient/build/
+>>>>>>> adf6b20dc819c62f7da2fb7838bd3e90cb2754e7

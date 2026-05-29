@@ -3,12 +3,18 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   // Gunakan 10.0.2.2 jika pakai emulator Android, atau localhost jika pakai Chrome/Windows
-  static const String baseUrl = 'http://10.177.31.218:5000/api';
+  static const String baseUrl = 'http://10.208.70.210:5000/api';
+
+  // Build URI safely: trim baseUrl to avoid accidental trailing spaces
+  Uri _buildUri(String path) {
+    final base = baseUrl.trim();
+    return Uri.parse('$base$path');
+  }
 
   // Ambil data users
   Future<List<dynamic>> getUsers() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/users'));
+      final response = await http.get(_buildUri('/users'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
@@ -23,7 +29,7 @@ class ApiService {
   // Ambil data departemen
   Future<List<dynamic>> getDepartments() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/departments'));
+      final response = await http.get(_buildUri('/departments'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       }
@@ -37,7 +43,7 @@ class ApiService {
   // Ambil data jabatan
   Future<List<dynamic>> getPositions() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/positions'));
+      final response = await http.get(_buildUri('/positions'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       }
@@ -52,7 +58,7 @@ class ApiService {
   Future<Map<String, dynamic>?> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'), // Kita perlu buat endpoint ini di backend
+        _buildUri('/login'), // Kita perlu buat endpoint ini di backend
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'email': email, 'password': password}),
       );
@@ -72,7 +78,7 @@ class ApiService {
   Future<bool> clockIn(int userId, double lat, double long) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/attendance/clock-in'),
+        _buildUri('/attendance/clock-in'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'user_id': userId,
@@ -91,7 +97,7 @@ class ApiService {
   Future<Map<String, dynamic>> addUser(Map<String, dynamic> userData) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users'),
+        _buildUri('/users'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(userData),
       );
@@ -117,7 +123,7 @@ class ApiService {
       int id, Map<String, dynamic> userData) async {
     try {
       final response = await http.put(
-        Uri.parse('$baseUrl/users/$id'),
+        _buildUri('/users/$id'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(userData),
       );
@@ -140,7 +146,7 @@ class ApiService {
   // Fungsi Hapus User
   Future<bool> deleteUser(int id) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl/users/$id'));
+      final response = await http.delete(_buildUri('/users/$id'));
       return response.statusCode == 200;
     } catch (e) {
       print('Error DeleteUser: $e');
@@ -151,7 +157,7 @@ class ApiService {
   // Ambil riwayat absensi semua user
   Future<List<dynamic>> getAttendance() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/attendance'));
+      final response = await http.get(_buildUri('/attendance'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
@@ -166,7 +172,7 @@ class ApiService {
   // Ambil jumlah presensi hari ini (untuk dashboard admin)
   Future<int> getTodayAttendanceCount() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/attendance/today'));
+      final response = await http.get(_buildUri('/attendance/today'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return (data['count'] ?? 0) as int;
@@ -181,7 +187,7 @@ class ApiService {
   // Ambil riwayat absensi per user
   Future<List<dynamic>> getUserAttendance(int userId) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/attendance/$userId'));
+      final response = await http.get(_buildUri('/attendance/$userId'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
@@ -196,7 +202,7 @@ class ApiService {
   // Ambil pengaturan presensi
   Future<Map<String, dynamic>?> getSettings() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/settings'));
+      final response = await http.get(_buildUri('/settings'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       }
@@ -210,8 +216,8 @@ class ApiService {
   // Update pengaturan presensi
   Future<bool> updateSettings(Map<String, dynamic> data) async {
     try {
-      final response = await http.put(
-        Uri.parse('$baseUrl/settings'),
+      final response = await http.post(
+        _buildUri('/settings'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(data),
       );
