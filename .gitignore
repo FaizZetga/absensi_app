@@ -49,3 +49,32 @@ backend/node_modules/
 backend/.env
 
 .antigravitycli/
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+
+# Android
+android/.gradle/
+android/app/build/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+
+# VSCode
+.vscode/
+
+# IntelliJ / Android Studio
+.idea/
+
+# Generated
+*.apk
+*.aab
+*.so
+*.dill
