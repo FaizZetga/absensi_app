@@ -77,4 +77,4 @@ ios/.symlinks/
 *.apk
 *.aab
 *.so
-*.dill
+*.dillclient/build/
