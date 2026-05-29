@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const db = require('./config/db');
 
@@ -9,9 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve Static Files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Basic Route
 app.get('/', (req, res) => {
-    res.send('Absensi API is running...');
+    res.redirect('/login.html');
 });
 
 // Auto-migrate: Pastikan kolom work_days ada di tabel settings
@@ -296,6 +300,193 @@ app.post('/api/attendance/clock-in', async (req, res) => {
         const query = 'INSERT INTO attendances (user_id, date, clock_in, status) VALUES (?, CURDATE(), CURTIME(), "on_time")';
         await db.query(query, [user_id]);
         res.status(201).json({ message: 'Clock-in successful' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Departments CRUD APIs
+// Add new department
+app.post('/api/departments', async (req, res) => {
+    const { name, description } = req.body;
+    if (!name) {
+        return res.status(400).json({ message: 'Nama departemen harus diisi' });
+    }
+    try {
+        const [existing] = await db.query('SELECT id FROM departments WHERE name = ?', [name]);
+        if (existing.length > 0) {
+            return res.status(409).json({ message: 'Departemen sudah ada' });
+        }
+        await db.query('INSERT INTO departments (name, description) VALUES (?, ?)', [name, description || null]);
+        res.status(201).json({ message: 'Department created successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update department
+app.put('/api/departments/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    if (!name) {
+        return res.status(400).json({ message: 'Nama departemen harus diisi' });
+    }
+    try {
+        await db.query('UPDATE departments SET name = ?, description = ? WHERE id = ?', [name, description || null, id]);
+        res.json({ message: 'Department updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete department
+app.delete('/api/departments/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query('DELETE FROM departments WHERE id = ?', [id]);
+        res.json({ message: 'Department deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Positions CRUD APIs
+// Add new position
+app.post('/api/positions', async (req, res) => {
+    const { name, level } = req.body;
+    if (!name) {
+        return res.status(400).json({ message: 'Nama posisi harus diisi' });
+    }
+    try {
+        const [existing] = await db.query('SELECT id FROM positions WHERE name = ?', [name]);
+        if (existing.length > 0) {
+            return res.status(409).json({ message: 'Posisi sudah ada' });
+        }
+        await db.query('INSERT INTO positions (name, level) VALUES (?, ?)', [name, level || 1]);
+        res.status(201).json({ message: 'Position created successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update position
+app.put('/api/positions/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, level } = req.body;
+    if (!name) {
+        return res.status(400).json({ message: 'Nama posisi harus diisi' });
+    }
+    try {
+        await db.query('UPDATE positions SET name = ?, level = ? WHERE id = ?', [name, level || 1, id]);
+        res.json({ message: 'Position updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete position
+app.delete('/api/positions/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query('DELETE FROM positions WHERE id = ?', [id]);
+        res.json({ message: 'Position deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Leave Requests CRUD APIs
+// Get all leave requests
+app.get('/api/leave-requests', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                l.id,
+                l.user_id,
+                u.name AS user_name,
+                l.leave_type,
+                DATE_FORMAT(l.start_date, '%Y-%m-%d') AS start_date,
+                DATE_FORMAT(l.end_date, '%Y-%m-%d') AS end_date,
+                l.reason,
+                l.status,
+                l.approved_by,
+                admin.name AS approved_by_name,
+                l.notes_admin
+            FROM leave_requests l
+            JOIN users u ON l.user_id = u.id
+            LEFT JOIN users admin ON l.approved_by = admin.id
+            ORDER BY l.created_at DESC
+        `);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update leave request status (approve/reject)
+app.put('/api/leave-requests/:id/status', async (req, res) => {
+    const { id } = req.params;
+    const { status, approved_by, notes_admin } = req.body;
+    if (!status || !['approved', 'rejected', 'pending'].includes(status)) {
+        return res.status(400).json({ message: 'Invalid status' });
+    }
+    try {
+        await db.query(
+            'UPDATE leave_requests SET status = ?, approved_by = ?, notes_admin = ? WHERE id = ?',
+            [status, approved_by || null, notes_admin || null, id]
+        );
+        res.json({ message: 'Leave request status updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Schedules CRUD APIs
+// Get all schedules
+app.get('/api/schedules', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                s.id,
+                s.user_id,
+                u.name AS user_name,
+                s.day_of_week,
+                s.check_in_time,
+                s.check_out_time
+            FROM schedules s
+            JOIN users u ON s.user_id = u.id
+            ORDER BY u.name, FIELD(s.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+        `);
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Save or Update schedule
+app.post('/api/schedules', async (req, res) => {
+    const { user_id, day_of_week, check_in_time, check_out_time } = req.body;
+    if (!user_id || !day_of_week || !check_in_time || !check_out_time) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+    try {
+        await db.query(`
+            INSERT INTO schedules (user_id, day_of_week, check_in_time, check_out_time)
+            VALUES (?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE check_in_time = ?, check_out_time = ?
+        `, [user_id, day_of_week, check_in_time, check_out_time, check_in_time, check_out_time]);
+        res.json({ message: 'Schedule saved successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete schedule
+app.delete('/api/schedules/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query('DELETE FROM schedules WHERE id = ?', [id]);
+        res.json({ message: 'Schedule deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

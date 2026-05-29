@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sistem Absensi</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <button class="close-sidebar" onclick="toggleSidebar()">×</button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('dashboard')" class="nav-link active">📊 Dashboard</a></li>
+                <li><a href="#" onclick="showSection('users')" class="nav-link">👥 Kelola User</a></li>
+                <li><a href="#" onclick="showSection('departments')" class="nav-link">🏢 Departemen</a></li>
+                <li><a href="#" onclick="showSection('positions')" class="nav-link">💼 Posisi</a></li>
+                <li><a href="#" onclick="showSection('schedules')" class="nav-link">📅 Jadwal Kerja</a></li>
+                <li><a href="#" onclick="showSection('leave_requests')" class="nav-link">✉️ Pengajuan Cuti</a></li>
+                <li><a href="#" onclick="showSection('attendance')" class="nav-link">📋 Riwayat Absen</a></li>
+                <li><a href="#" onclick="showSection('settings')" class="nav-link">⚙️ Pengaturan</a></li>
+                <li><a href="#" onclick="logout()" class="nav-link logout">🚪 Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <span id="userInfo" class="user-info"></span>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3>Total User</h3>
+                                <p id="totalUsers" class="stat-value">-</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏢</div>
+                            <div class="stat-content">
+                                <h3>Total Departemen</h3>
+                                <p id="totalDepts" class="stat-value">-</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📍</div>
+                            <div class="stat-content">
+                                <h3>Hadir Hari Ini</h3>
+                                <p id="todayAttendance" class="stat-value">-</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏰</div>
+                            <div class="stat-content">
+                                <h3>Waktu Server</h3>
+                                <p id="serverTime" class="stat-value">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2>Aktivitas Terbaru</h2>
+                        <div id="recentList" class="activity-list">
+                            <p class="loading">Memuat data...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users Section -->
+                <section id="users" class="section">
+                    <div class="section-header">
+                        <h2>Kelola User</h2>
+                        <button class="btn btn-primary" onclick="openAddUserModal()">+ Tambah User</button>
+                    </div>
+
+                    <div class="search-filter">
+                        <input type="text" id="userSearch" placeholder="Cari user..." onkeyup="filterUsers()">
+                        <select id="userFilter" onchange="filterUsers()">
+                            <option value="">Semua Status</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Inaktif">Inaktif</option>
+                        </select>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>No. Telp</th>
+                                <th>Departemen</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr><td colspan="7" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Departments Section -->
+                <section id="departments" class="section">
+                    <div class="section-header">
+                        <h2>Kelola Departemen</h2>
+                        <button class="btn btn-primary" onclick="openAddDeptModal()">+ Tambah Departemen</button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Departemen</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deptsTable">
+                            <tr><td colspan="3" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Positions Section -->
+                <section id="positions" class="section">
+                    <div class="section-header">
+                        <h2>Kelola Posisi</h2>
+                        <button class="btn btn-primary" onclick="openAddPositionModal()">+ Tambah Posisi</button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Posisi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positionsTable">
+                            <tr><td colspan="3" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Schedules Section -->
+                <section id="schedules" class="section">
+                    <div class="section-header">
+                        <h2>Kelola Jadwal Kerja</h2>
+                        <button class="btn btn-primary" onclick="openAddScheduleModal()">+ Tambah Jadwal</button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Karyawan</th>
+                                <th>Hari</th>
+                                <th>Jam Masuk</th>
+                                <th>Jam Pulang</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedulesTable">
+                            <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Leave Requests Section -->
+                <section id="leave_requests" class="section">
+                    <div class="section-header">
+                        <h2>Pengajuan Cuti</h2>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Karyawan</th>
+                                <th>Tipe Cuti</th>
+                                <th>Mulai</th>
+                                <th>Selesai</th>
+                                <th>Alasan</th>
+                                <th>Status</th>
+                                <th>Catatan Admin</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveRequestsTable">
+                            <tr><td colspan="9" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Attendance Section -->
+                <section id="attendance" class="section">
+                    <div class="section-header">
+                        <h2>Riwayat Attendance</h2>
+                        <button class="btn btn-secondary" onclick="exportAttendance()">📥 Export</button>
+                    </div>
+
+                    <div class="search-filter">
+                        <input type="text" id="attSearch" placeholder="Cari user..." onkeyup="filterAttendance()">
+                        <input type="date" id="attDate" onchange="filterAttendance()">
+                        <select id="attStatus" onchange="filterAttendance()">
+                            <option value="">Semua Status</option>
+                            <option value="on_time">Tepat Waktu</option>
+                            <option value="late">Terlambat</option>
+                            <option value="absent">Tidak Hadir</option>
+                        </select>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama User</th>
+                                <th>Tanggal</th>
+                                <th>Clock In</th>
+                                <th>Clock Out</th>
+                                <th>Status</th>
+                                <th>Lokasi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTable">
+                            <tr><td colspan="7" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="section">
+                    <div class="section-header">
+                        <h2>Pengaturan Absensi</h2>
+                    </div>
+
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="startTime">Jam Mulai:</label>
+                            <input type="time" id="startTime" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endTime">Jam Selesai:</label>
+                            <input type="time" id="endTime" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="workDays">Hari Kerja:</label>
+                            <input type="text" id="workDays" class="form-control" placeholder="Contoh: Senin - Jumat">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="workHours">Jam Kerja:</label>
+                            <input type="text" id="workHours" class="form-control" placeholder="Contoh: 08:00 - 17:00">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="centerLat">Latitude Pusat:</label>
+                            <input type="number" id="centerLat" class="form-control" step="0.000001" placeholder="-6.200000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="centerLon">Longitude Pusat:</label>
+                            <input type="number" id="centerLon" class="form-control" step="0.000001" placeholder="106.816666">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="maxRadius">Radius Maksimal (meter):</label>
+                            <input type="number" id="maxRadius" class="form-control" placeholder="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="isEnabled" class="checkbox-label">
+                                <input type="checkbox" id="isEnabled">
+                                <span>Aktifkan Absensi</span>
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveSettings()">💾 Simpan Pengaturan</button>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit User -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Tambah User</h2>
+                <button class="close-btn" onclick="closeUserModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="userName">Nama:</label>
+                    <input type="text" id="userName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" id="userEmail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password:</label>
+                    <input type="password" id="userPassword" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">No. Telp:</label>
+                    <input type="text" id="userPhone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userDept">Departemen:</label>
+                    <select id="userDept" class="form-control">
+                        <option value="">Pilih Departemen</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userPosition">Posisi:</label>
+                    <select id="userPosition" class="form-control">
+                        <option value="">Pilih Posisi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userAddress">Alamat:</label>
+                    <textarea id="userAddress" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="userStatus" class="checkbox-label">
+                        <input type="checkbox" id="userStatus" checked>
+                        <span>Aktif</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeUserModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveUser()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit Department -->
+    <div id="deptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="deptModalTitle">Tambah Departemen</h2>
+                <button class="close-btn" onclick="closeDeptModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="deptName">Nama Departemen:</label>
+                    <input type="text" id="deptName" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDeptModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveDept()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit Position -->
+    <div id="positionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="positionModalTitle">Tambah Posisi</h2>
+                <button class="close-btn" onclick="closePositionModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="positionName">Nama Posisi:</label>
+                    <input type="text" id="positionName" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePositionModal()">Batal</button>
+                <button class="btn btn-primary" onclick="savePosition()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit Schedule -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="scheduleModalTitle">Tambah Jadwal</h2>
+                <button class="close-btn" onclick="closeScheduleModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="schedUser">Karyawan:</label>
+                    <select id="schedUser" class="form-control">
+                        <option value="">Pilih Karyawan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schedDay">Hari:</label>
+                    <select id="schedDay" class="form-control">
+                        <option value="Monday">Senin</option>
+                        <option value="Tuesday">Selasa</option>
+                        <option value="Wednesday">Rabu</option>
+                        <option value="Thursday">Kamis</option>
+                        <option value="Friday">Jumat</option>
+                        <option value="Saturday">Sabtu</option>
+                        <option value="Sunday">Minggu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schedCheckIn">Jam Masuk:</label>
+                    <input type="time" id="schedCheckIn" class="form-control" value="08:00">
+                </div>
+                <div class="form-group">
+                    <label for="schedCheckOut">Jam Pulang:</label>
+                    <input type="time" id="schedCheckOut" class="form-control" value="17:00">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeScheduleModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveSchedule()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Process Leave Request -->
+    <div id="leaveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Proses Pengajuan Cuti</h2>
+                <button class="close-btn" onclick="closeLeaveModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Karyawan:</strong> <span id="leaveUserText">-</span></p>
+                <p><strong>Tipe Cuti:</strong> <span id="leaveTypeText">-</span></p>
+                <p><strong>Tanggal:</strong> <span id="leaveDateText">-</span></p>
+                <p><strong>Alasan:</strong> <span id="leaveReasonText">-</span></p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+                <div class="form-group">
+                    <label for="leaveStatusSelect">Keputusan:</label>
+                    <select id="leaveStatusSelect" class="form-control">
+                        <option value="approved">Setujui</option>
+                        <option value="rejected">Tolak</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="leaveAdminNotes">Catatan Admin:</label>
+                    <textarea id="leaveAdminNotes" class="form-control" rows="3" placeholder="Masukkan alasan atau catatan tambahan"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeLeaveModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveLeaveRequestStatus()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
